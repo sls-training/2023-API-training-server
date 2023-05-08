@@ -16,7 +16,7 @@ paths:
       summary: Log in as a user
   /signout:
     delete:
-      summary: Log out as a user
+      summary: Log out as the user
   /files:
     get:
       summary: Return uploaded files
@@ -24,11 +24,11 @@ paths:
       summary: Upload a new file
   /files/{fileId}:
     get:
-      summary: Get a file info(file itself, name or description)
+      summary: Get the file info(file itself, name or description)
     patch:
-      summary: Update info of a file
+      summary: Update info of the file
     delete:
-      summary: Delete an uploaded file
+      summary: Delete the uploaded file
     parameters:
       - name: fileId
   /profile:
