@@ -31,7 +31,7 @@ paths:
       summary: Delete the uploaded file
     parameters:
       - name: fileId
-  /profile:
+  /user:
     get:
       summary: Get info of the logged-in user
     patch:
