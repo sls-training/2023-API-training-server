@@ -33,8 +33,8 @@ paths:
       - name: fileId
   /profile:
     get:
-      summary: Get info of a logged-in user
+      summary: Get info of the logged-in user
     patch:
-      summary: Update info of a logged-in user
+      summary: Update info of the logged-in user
     delete:
-      summary: Log out as a user
+      summary: Delete the logged-in user
