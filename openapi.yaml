@@ -9,13 +9,9 @@ info:
 paths:
   /signup:
     summary: Create a new user
-    get:
-      summary: Return a form to create a new user
     post:
       summary: Create a new user using the posted information
   /signin:
-    get:
-      summary: Return a form to log in as a user
     post:
       summary: Log in as a user
     delete:
