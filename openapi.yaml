@@ -7,10 +7,6 @@ info:
   version: 0.0.0
 
 paths:
-  /signup:
-    summary: Create a new user
-    post:
-      summary: Create a new user using the posted information
   /signin:
     post:
       summary: Log in as a user
@@ -34,6 +30,8 @@ paths:
   /user:
     get:
       summary: Get info of the logged-in user
+    post:
+      summary: Create a new user using the posted information
     patch:
       summary: Update info of the logged-in user
     delete:
