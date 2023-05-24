@@ -1,38 +1,38 @@
 openapi: 3.1.0
 
 info:
-  title: APIs to provide a simple online storage service
-  description: They are APIs to learn what APIs are and how to create them.
+  title: シンプルなオンラインストレージサービス提供用API
+  description: 本APIは、APIとはなにか、どのようにして作成するのかを学ぶためのものである。
   termsOfService: http://localhost:{PORT}/
   version: 0.0.0
 
 paths:
   /signin:
     post:
-      summary: Log in as a user
+      summary: ユーザとしてログインする
   /signout:
     delete:
-      summary: Log out as the user
+      summary: ユーザとしてログアウトする
   /files:
     get:
-      summary: Return uploaded files
+      summary: アップロードされたファイル一覧を返す
     post:
-      summary: Upload a new file
+      summary: 新しいファイルをアップロードする
   /files/{fileId}:
     get:
-      summary: Get the file info(file itself, name or description)
+      summary: ファイル名やその説明文、あるいはファイル自身などファイルの情報を返す
     patch:
-      summary: Update info of the file
+      summary: ファイルの情報を更新する
     delete:
-      summary: Delete the uploaded file
+      summary: アップロードされているファイルを削除する
     parameters:
       - name: fileId
   /user:
     get:
-      summary: Get info of the logged-in user
+      summary: 現在自分がログインしているユーザの情報を返す
     post:
-      summary: Create a new user using the posted information
+      summary: 新しいユーザを作成する
     patch:
-      summary: Update info of the logged-in user
+      summary: 現在自分がログインしているユーザの情報を更新する
     delete:
-      summary: Delete the logged-in user
+      summary: 現在自分がログインしているユーザの情報を削除する
