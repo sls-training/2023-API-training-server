@@ -1,0 +1,38 @@
+openapi: 3.1.0
+
+info:
+  title: APIs to provide a simple online storage service
+  description: They are APIs to learn what APIs are and how to create them.
+  termsOfService: http://localhost:{PORT}/
+  version: 0.0.0
+
+paths:
+  /signin:
+    post:
+      summary: Log in as a user
+  /signout:
+    delete:
+      summary: Log out as the user
+  /files:
+    get:
+      summary: Return uploaded files
+    post:
+      summary: Upload a new file
+  /files/{fileId}:
+    get:
+      summary: Get the file info(file itself, name or description)
+    patch:
+      summary: Update info of the file
+    delete:
+      summary: Delete the uploaded file
+    parameters:
+      - name: fileId
+  /user:
+    get:
+      summary: Get info of the logged-in user
+    post:
+      summary: Create a new user using the posted information
+    patch:
+      summary: Update info of the logged-in user
+    delete:
+      summary: Delete the logged-in user
