@@ -6,6 +6,38 @@ info:
   termsOfService: http://localhost:{PORT}/
   version: 0.0.0
 
+components:
+  parameters:
+  schemas:
+    error:
+      type: object
+      properties:
+        status:
+          type: number
+          description: エラー発生時のHTTPステータスと同じ値になる。
+        title:
+          type: string
+          description: エラーに関する対人可読な短い説明文が格納される。
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: エラーが発生した対象の名前が格納される。
+              message:
+                type: string
+                description: 発生したエラーの詳細が格納される。
+            required:
+              - name
+              - reason
+            description: 発生した1つのエラーに関する情報が格納される。
+          description: 同時に発生したエラー全ての情報が格納される。
+      required:
+        - status
+        - errors
+
 paths:
   /signin:
     post:
@@ -32,6 +64,100 @@ paths:
       summary: 現在自分がログインしているユーザの情報を返す
     post:
       summary: 新しいユーザを作成する
+      operationId: CreateUser
+      parameters:
+        - name: name
+          in: header
+          description: 作成するユーザの表示名である。一意である必要はない。
+          required: true
+          schema:
+            type: string
+            minimum: 1
+            maximum: 64
+          examples:
+            ieyasu:
+              summary: 日本語名
+              value: 徳川家康
+            washington:
+              summary: 英語名
+              value: George Washington
+            anthony:
+              summary: ハンドルネーム
+              value: ad
+        - name: email
+          in: header
+          description: 作成するユーザを識別するメールアドレスである。一意である必要がある。
+          required: true
+          schema:
+            type: string
+            format: email
+          examples:
+            gmail:
+              summary: Gmailのメールアドレスの例
+              value: foo.bar@gmail.com
+        - name: password
+          in: header
+          description: 作成するユーザを認証するパスワードである。
+          required: true
+          schema:
+            type: string
+            format: password
+            minimum: 16
+            maximum: 128
+          examples:
+            naive_password:
+              summary: 単純なパスワード
+              value: abcdefghijklmnop
+      responses:
+        '201':
+          description: ユーザ作成に成功したことを意味する。
+        '422':
+          description: ユーザ作成に失敗したことを意味する。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                empty_name:
+                  summary: ユーザの表示名が空白である。
+                  value:
+                    {
+                      "status": 422,
+                      "title": "Validation error for user",
+                      "errors": [
+                        { "name": "name", "reason": "The name is empty." }
+                      ]
+                    }
+                invalid_email:
+                  summary: メールアドレスが不正な形式である。
+                  value:
+                    {
+                      "status": 422,
+                      "title": "Validation error for user",
+                      "errors": [
+                        { "name": "email", "reason": "The email has an invalid form." }
+                      ]
+                    }
+                not_unique_email:
+                  summary: 同じメールアドレスが既に登録されている。
+                  value:
+                    {
+                      "status": 422,
+                      "title": "Validation error for user",
+                      "errors": [
+                        { "name": "email", "reason": "The email has already been registered." }
+                      ]
+                    }
+                too_short_password:
+                  summary: パスワードが短すぎる。
+                  value:
+                    {
+                      "status": 422,
+                      "title": "Validation error for user",
+                      "errors": [
+                        { "name": "password", "reason": "The password is too short." }
+                      ]
+                    }
     patch:
       summary: 現在自分がログインしているユーザの情報を更新する
     delete:
