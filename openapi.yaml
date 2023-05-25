@@ -53,6 +53,10 @@ components:
         エラーに関する対人可読な説明文が格納される。
 
         https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
 
 paths:
   /signin:
@@ -211,7 +215,100 @@ paths:
                   - error
   /files:
     get:
-      summary: アップロードされたファイル一覧を返す
+      summary: ユーザがアップロードしたファイル一覧を返す。
+      description: 送信されたアクセストークンを発行されたユーザがアップロードしたファイルの一覧を返す。
+      operationId: GetFiles
+      responses:
+        '200':
+          description: ユーザがアップロードしたファイル一覧の取得に成功したことを意味する。
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      description: アップロードしたファイルの名前
+                      type: string
+                    description:
+                      description: アップロードしたファイルの説明文
+                      type: string
+                    size:
+                      description: アップロードしたファイルの容量
+                      type: integer
+                      format: int64
+                    created_at:
+                      description: ファイルをアップロードした日時
+                      type: string
+                      format: date-time
+                    changed_at:
+                      description: アップロードしたファイルの最終更新日時
+                      type: string
+                      format: date-time
+                  required:
+                    - name
+                    - size
+                    - created_at
+                    - changed_at
+              examples:
+                files:
+                  summary: サンプルファイル群
+                  value:
+                    [
+                      {
+                        "name": "sample01.txt",
+                        "description": "My diary",
+                        "size": 1024,
+                        "created_at": "2020-10-12T11:20:44+00:00",
+                        "changed_at": "2023-05-25T23:07:39+00:00"
+                      },
+                      {
+                        "name": "sample02.png",
+                        "size": 1048576,
+                        "created_at": "2020-10-12T11:10:30+00:00",
+                        "changed_at": "2020-10-12T11:10:30+00:00"
+                      }
+                    ]
+        '401':
+          description: ユーザがアップロードしたファイル一覧の取得に失敗したことを意味する。
+          content:
+            application/problem+json:
+              schema:
+                description: |
+                  https://datatracker.ietf.org/doc/html/rfc7807
+                  https://datatracker.ietf.org/doc/html/rfc6749#section-7.2
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: エラー発生時のHTTPステータスと同じ値になる。
+                  title:
+                    type: string
+                    description: エラーに関する対人可読な短い説明文が格納される。
+                  error:
+                    description: https://www.iana.org/assignments/oauth-parameters/oauth-parameters.xhtml
+                    type: string
+                    enum:
+                      - invalid_request
+                      - invalid_token
+                      - insufficient_scope
+                    description: エラー内容を示すエラーコードが格納される。
+                required:
+                  - status
+                  - title
+                  - error
+              examples:
+                invalid_token:
+                  summary: 不正なトークンによるアクセスを試みた場合。
+                  value:
+                    {
+                      "status": 401,
+                      "title": "An access with an invalid access token",
+                      "error": "invalid_token"
+                    }
+      security:
+        - bearer: []
     post:
       summary: 新しいファイルをアップロードする
   /files/{fileId}:
