@@ -95,9 +95,6 @@ paths:
                     type: integer
                     format: int64
                     description: アクセストークンが発行されてから失効するまでの有効期間を示す。単位は秒である。
-                  refresh_token:
-                    type: string
-                    description: 発行されたアクセストークンと同じグラントを利用して新しいアクセストークンを発行するためのトークンである。
                   scope:
                     type: string
                     description: 発行されたアクセストークンのスコープを示す。省略されている場合は、リクエストしたスコープと同じであることを意味する。
@@ -111,8 +108,7 @@ paths:
                     {
                       "access_token": "zNxoOIF7F9FEifI2",
                       "token_type": "bearer",
-                      "expires_in": 3600,
-                      "refresh_token": "4iIJIeL9iiFBBFMn"
+                      "expires_in": 3600
                     }
         '400':
           description: |
