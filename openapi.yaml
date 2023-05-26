@@ -60,7 +60,7 @@ paths:
                   enum:
                     - password
                   description: 認可サーバに要求するグラントのタイプである。ここではResource Owner Password Credential grant方式を利用するため、値は `password` である必要がある。
-                user_name:
+                username:
                   type: string
                   description: アクセストークンの要求に利用するリソースオーナーのユーザ名である。
                 password:
