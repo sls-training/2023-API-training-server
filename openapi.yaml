@@ -174,7 +174,7 @@ paths:
                   type: string
                   enum:
                     - access_token
-                  description: 失効させたいトークンの種類
+                  description: 失効させたいトークンの種類を示す。サーバ上でトークンを検索する際に利用される補助情報であり、最終的にサーバ上でトークンを発見できるかには影響を与えない。
               required:
                 - token
       responses:
