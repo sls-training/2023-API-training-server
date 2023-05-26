@@ -186,6 +186,15 @@ paths:
             トークンの失効に失敗したことを意味する。
 
             https://datatracker.ietf.org/doc/html/rfc7009#section-2.2.1
+
+            上記のURI先に記載されているエラーコードのうち、ここではサポートしていないものがある。
+            これは以下のような理由による。
+
+            - クライアント登録もクライアント認証もないので、クライアント関連のエラーは発生しない。
+            - トークンしか送信しないのでグラント関連のエラーは発生しない。
+            - アクセストークンのみを発行かつアクセストークンの失効をサポートしている都合上、サポートしていないタイプのトークンの送信が発生しないので、トークンタイプ関連のエラーは発生しない。
+
+            よって、これらの前提が変更されれば、ここでサポートされるエラーコードも変更される必要がある。
           content:
             application/json:
               schema:
@@ -195,11 +204,6 @@ paths:
                     type: string
                     enum:
                       - invalid_request
-                      - invalid_client
-                      - invalid_grant
-                      - unauthorized_client
-                      - unsupported_grant_type
-                      - unsupported_token_type
                     description: 失敗した理由を示すエラーコードである。
                   error_description:
                     type: string
