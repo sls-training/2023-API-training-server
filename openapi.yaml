@@ -124,10 +124,9 @@ paths:
                     type: string
                     enum:
                       - invalid_request
-                      - invalid_client
                       - invalid_grant
-                      - unauthorized_client
                       - unsupported_grant_type
+                      - invalid_scope
                     description: 失敗した理由を示すエラーコードである。
                   error_description:
                     type: string
