@@ -218,9 +218,61 @@ paths:
       summary: ユーザがアップロードしたファイル一覧を返す。
       description: 送信されたアクセストークンを発行されたユーザがアップロードしたファイルの一覧を返す。
       operationId: GetFiles
+      parameters:
+        - name: page
+          in: query
+          description: 要求するページ番号を指定する。
+          schema:
+            type: integer
+            format: int64
+            default: 1
+        - name: per
+          in: query
+          description: 1ページに含めるファイルの情報の総数を指定する。ただし、特に最終ページについては、必ずしもこのパラメータで指定した数のファイルの情報が含まれるとは限らない。
+          schema:
+            type: integer
+            format: int64
+            default: 20
+        - name: order
+          in: query
+          description: 返すファイル情報の並びを決定する際の順序を指定する。
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: asc
+        - name: orderby
+          in: query
+          description: 返すファイル情報をどのような基準で並べるか指定する。
+          schema:
+            type: string
+            enum:
+              - name
+              - description
+              - size
+              - created_at
+              - changed_at
+            default: created_at
       responses:
         '200':
           description: ユーザがアップロードしたファイル一覧の取得に成功したことを意味する。
+          headers:
+            link:
+              description: |
+                ページネーション用のリンクを格納する。
+
+                この値の仕様はGitHubのREST APIにおけるページネーションと同様である。
+                https://docs.github.com/en/rest/guides/using-pagination-in-the-rest-api?apiVersion=2022-11-28#using-link-headers
+              schema:
+                type: string
+              examples:
+                on_first_page:
+                  summary: 先頭ページを返す場合。
+                  value: link: <http://localhost:<PORT>/files?page=2>; rel="next", <http://localhost:<PORT>/files?page=7>; rel="last", <http://localhost:<PORT>/files?page=1>; rel="first"
+                on_middle_page:
+                  summary: 中間ページを返す場合。
+                  value: link: <http://localhost:<PORT>/files?page=2>; rel="prev", <http://localhost:<PORT>/files?page=4>; rel="next", <http://localhost:<PORT>/files?page=7>; rel="last", <http://localhost:<PORT>/files?page=1>; rel="first"
           content:
             application/json:
               schema:
