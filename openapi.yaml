@@ -270,29 +270,62 @@ paths:
                         "changed_at": "2020-10-12T11:10:30+00:00"
                       }
                     ]
-        '401':
-          description: ユーザがアップロードしたファイル一覧の取得に失敗したことを意味する。
+        '400':
+          description: 必須パラメータの不足、サポートされていないパラメータ名や値、重複したパラメータ名、複数ないし正しくない認証方法の利用を意味する。
           content:
             application/problem+json:
               schema:
                 description: |
                   https://datatracker.ietf.org/doc/html/rfc7807
                   https://datatracker.ietf.org/doc/html/rfc6749#section-7.2
+                  https://datatracker.ietf.org/doc/html/rfc6750#section-3.1
                 type: object
                 properties:
                   status:
-                    type: integer
-                    description: エラー発生時のHTTPステータスと同じ値になる。
+                    $ref: '#/components/schemas/problemDetailsStatus'
                   title:
-                    type: string
-                    description: エラーに関する対人可読な短い説明文が格納される。
+                    $ref: '#/components/schemas/problemDetailsTitle'
                   error:
-                    description: https://www.iana.org/assignments/oauth-parameters/oauth-parameters.xhtml
                     type: string
                     enum:
                       - invalid_request
+                    description: エラー内容を示すエラーコードが格納される。
+                required:
+                  - status
+                  - title
+                  - error
+              examples:
+                missing_required_parameters:
+                  summary: 必須パラメータが不足している。
+                  value:
+                    {
+                      "status": 400,
+                      "title": "Missing required parameters",
+                      "error": "invalid_request"
+                    }
+        '401':
+          description: |
+            アクセストークンがない、あるいは失効や有効期限切れなどによる有効でないアクセストークンによるアクセスを意味する。
+
+            なお、トークンがない場合や認証方式が誤っている場合は、レスポンスボディには何も含まれないことに注意する。
+            この仕様は [3.1. Error Codes | OAuth 2.0 Bearer Token Usage](https://datatracker.ietf.org/doc/html/rfc6750#section-3.1) で推奨されている。
+          content:
+            application/problem+json:
+              schema:
+                description: |
+                  https://datatracker.ietf.org/doc/html/rfc7807
+                  https://datatracker.ietf.org/doc/html/rfc6749#section-7.2
+                  https://datatracker.ietf.org/doc/html/rfc6750#section-3.1
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/problemDetailsStatus'
+                  title:
+                    $ref: '#/components/schemas/problemDetailsTitle'
+                  error:
+                    type: string
+                    enum:
                       - invalid_token
-                      - insufficient_scope
                     description: エラー内容を示すエラーコードが格納される。
                 required:
                   - status
@@ -306,6 +339,44 @@ paths:
                       "status": 401,
                       "title": "An access with an invalid access token",
                       "error": "invalid_token"
+                    }
+        '403':
+          description: 送信したアクセストークンの権限の不足を意味する。
+          content:
+            application/problem+json:
+              schema:
+                description: |
+                  https://datatracker.ietf.org/doc/html/rfc7807
+                  https://datatracker.ietf.org/doc/html/rfc6749#section-7.2
+                  https://datatracker.ietf.org/doc/html/rfc6750#section-3.1
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/problemDetailsStatus'
+                  title:
+                    $ref: '#/components/schemas/problemDetailsTitle'
+                  error:
+                    type: string
+                    enum:
+                      - insufficient_scope
+                    description: エラー内容を示すエラーコードが格納される。
+                  scope:
+                    type: string
+                    description: 保護されたリソースへのアクセスに必要なスコープが格納される。
+                required:
+                  - status
+                  - title
+                  - error
+                  - scope
+              examples:
+                insufficient_scope:
+                  summary: アクセストークンの権限が不足している場合。
+                  value:
+                    {
+                      "status": 403,
+                      "title": "The access token only has insufficient scopes",
+                      "error": "insufficient_scope",
+                      "scope": "write"
                     }
       security:
         - bearer: []
