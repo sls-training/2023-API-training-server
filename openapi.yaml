@@ -208,7 +208,7 @@ paths:
                     type: string
                     description: 失敗した理由に関する対人可読な追加情報である。
                 required:
-                  - erorr
+                  - error
   /files:
     get:
       summary: アップロードされたファイル一覧を返す
