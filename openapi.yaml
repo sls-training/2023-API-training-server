@@ -13,11 +13,9 @@ components:
       type: object
       properties:
         status:
-          type: number
-          description: エラー発生時のHTTPステータスと同じ値になる。
+          $ref: '#/components/schemas/problemDetailsStatus'
         title:
-          type: string
-          description: エラーに関する対人可読な短い説明文が格納される。
+          $ref: '#/components/schemas/problemDetailsTitle'
         errors:
           type: array
           items:
@@ -37,11 +35,127 @@ components:
       required:
         - status
         - errors
+    problemDetailsStatus:
+      type: integer
+      description: |
+        エラー発生時のHTTPステータスと同じ値になる。
+
+        https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
+    problemDetailsTitle:
+      type: string
+      description: |
+        エラーに関する対人可読な短い説明文が格納される。
+
+        https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
+    problemDetailsDetail:
+      type: string
+      description: |
+        エラーに関する対人可読な説明文が格納される。
+
+        https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
 
 paths:
   /signin:
     post:
-      summary: ユーザとしてログインする
+      summary: 認証したユーザにアクセストークンを発行する。
+      description: OAuth2.0のResource Owner Password Credential grant方式で、かつクライアント認証なしでのアクセストークンの発行を行う。
+      operationId: LoginUser
+      requestBody:
+        description: |
+          OAuth2.0のResource Owner Password Credential grant方式によるアクセストークンリクエスト時に必要となるパラメータを格納する。
+          なお、UTF-8でエンコードされている必要がある。
+
+          https://datatracker.ietf.org/doc/html/rfc6749#section-4.3.2
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  enum:
+                    - password
+                  description: 認可サーバに要求するグラントのタイプである。ここではResource Owner Password Credential grant方式を利用するため、値は `password` である必要がある。
+                username:
+                  type: string
+                  description: アクセストークンの要求に利用するリソースオーナーのユーザ名である。
+                password:
+                  type: string
+                  description: アクセストークンの要求に利用するリソースオーナーのパスワードである。
+                scope:
+                  type: string
+                  description: 要求するアクセストークンのスコープである。
+              required:
+                - grant_type
+                - user_name
+                - password
+        required: true
+      responses:
+        '200':
+          description: |
+            ログインに成功してアクセストークンが発行されたことを意味する。
+
+            https://datatracker.ietf.org/doc/html/rfc6749#section-5.1
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    description: 認可サーバから発行されたアクセストークンである。
+                  token_type:
+                    type: string
+                    description: 発行されたアクセストークンの種類である。トークンをどのようにして利用するかを示す。
+                  expires_in:
+                    type: integer
+                    format: int64
+                    description: アクセストークンが発行されてから失効するまでの有効期間を示す。単位は秒である。
+                  scope:
+                    type: string
+                    description: 発行されたアクセストークンのスコープを示す。省略されている場合は、リクエストしたスコープと同じであることを意味する。
+                required:
+                  - access_token
+                  - token_type
+              examples:
+                successful_login:
+                  summary: ログインに成功してアクセストークンが発行された
+                  value:
+                    {
+                      "access_token": "zNxoOIF7F9FEifI2",
+                      "token_type": "bearer",
+                      "expires_in": 3600
+                    }
+        '400':
+          description: |
+            ログインに失敗してアクセストークンが発行されなかったことを意味する。
+
+            https://datatracker.ietf.org/doc/html/rfc6749#section-5.2
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/problemDetailsStatus'
+                  title:
+                    $ref: '#/components/schemas/problemDetailsTitle'
+                  detail:
+                    # NOTE: 役割としては https://datatracker.ietf.org/doc/html/rfc6749#section-5.2 に定義されている任意のフィールドである `error_description` と同様である。
+                    # 場合によっては、互換性のために値は `detail` フィールドと同値である `error_description` フィールドを追加する必要があるかもしれない。
+                    $ref: '#/components/schemas/problemDetailsDetail'
+                  error:
+                    type: string
+                    enum:
+                      - invalid_request
+                      - invalid_grant
+                      - unsupported_grant_type
+                      - invalid_scope
+                    description: 失敗した理由を示すエラーコードである。
+                required:
+                  - status
+                  - title
+                  - error
   /signout:
     delete:
       summary: ユーザとしてログアウトする
