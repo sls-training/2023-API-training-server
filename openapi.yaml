@@ -41,7 +41,7 @@ components:
 paths:
   /signin:
     post:
-      summary: ログインしたユーザにアクセストークンを発行する。
+      summary: 認証したユーザにアクセストークンを発行する。
       description: OAuth2.0のResource Owner Password Credential grant方式で、かつクライアント認証なしでのアクセストークンの発行を行う。
       operationId: LoginUser
       requestBody:
