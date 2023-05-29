@@ -248,6 +248,7 @@ paths:
           schema:
             type: string
             enum:
+              - id
               - name
               - description
               - size
@@ -280,6 +281,10 @@ paths:
                 items:
                   type: object
                   properties:
+                    id:
+                      description: アップロードしたファイルのID
+                      type: string
+                      format: uuid
                     name:
                       description: アップロードしたファイルの名前
                       type: string
@@ -299,6 +304,7 @@ paths:
                       type: string
                       format: date-time
                   required:
+                    - id
                     - name
                     - size
                     - created_at
@@ -309,6 +315,7 @@ paths:
                   value:
                     [
                       {
+                        "id": "76DA18B4-7CF0-48C1-A33D-2FFA0A4B345A",
                         "name": "sample01.txt",
                         "description": "My diary",
                         "size": 1024,
@@ -316,6 +323,7 @@ paths:
                         "changed_at": "2023-05-25T23:07:39+00:00"
                       },
                       {
+                        "id": "9BD3BEA3-67E7-401A-9A45-C6CAB38A052A",
                         "name": "sample02.png",
                         "size": 1048576,
                         "created_at": "2020-10-12T11:10:30+00:00",
