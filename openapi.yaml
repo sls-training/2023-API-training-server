@@ -157,8 +157,65 @@ paths:
                   - title
                   - error
   /signout:
-    delete:
-      summary: ユーザとしてログアウトする
+    post:
+      summary: 発行したアクセストークンを失効させる。
+      operationId: LogoutUser
+      requestBody:
+        description: https://datatracker.ietf.org/doc/html/rfc7009#section-2.1
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: クライアントが失効させたいトークン
+                token_type_hint:
+                  type: string
+                  enum:
+                    - access_token
+                  description: 失効させたいトークンの種類を示す。サーバ上でトークンを検索する際に利用される補助情報であり、最終的にサーバ上でトークンを発見できるかには影響を与えない。
+              required:
+                - token
+      responses:
+        '200':
+          description: トークンの失効に成功したことを示す。また、不正なトークンを送信した場合もこのレスポンスを返す。
+        '400':
+          description: |
+            トークンの失効に失敗したことを意味する。
+
+            https://datatracker.ietf.org/doc/html/rfc7009#section-2.2.1
+
+            上記のURI先に記載されているエラーコードのうち、ここではサポートしていないものがある。
+            これは以下のような理由による。
+
+            - クライアント登録もクライアント認証もないので、クライアント関連のエラーは発生しない。
+            - トークンしか送信しないのでグラント関連のエラーは発生しない。
+            - アクセストークンのみを発行かつアクセストークンの失効をサポートしている都合上、サポートしていないタイプのトークンの送信が発生しないので、トークンタイプ関連のエラーは発生しない。
+
+            よって、これらの前提が変更されれば、ここでサポートされるエラーコードも変更される必要がある。
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/problemDetailsStatus'
+                  title:
+                    $ref: '#/components/schemas/problemDetailsTitle'
+                  detail:
+                    # NOTE: 役割としては https://datatracker.ietf.org/doc/html/rfc6749#section-5.2 に定義されている任意のフィールドである `error_description` と同様である。
+                    # 場合によっては、互換性のために値は `detail` フィールドと同値である `error_description` フィールドを追加する必要があるかもしれない。
+                    $ref: '#/components/schemas/problemDetailsDetail'
+                  error:
+                    type: string
+                    enum:
+                      - invalid_request
+                    description: 失敗した理由を示すエラーコードである。
+                required:
+                  - status
+                  - title
+                  - error
   /files:
     get:
       summary: アップロードされたファイル一覧を返す
