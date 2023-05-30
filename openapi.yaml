@@ -19,13 +19,23 @@ components:
         name:
           description: ファイルの名前
           type: string
+          minLength: 1
+          maxLength: 128
         description:
           description: ファイルの説明文
           type: string
+          minLength: 0
+          maxLength: 1024
         size:
           description: ファイルの容量
           type: integer
           format: int64
+          minimum: 0
+          # 上限を緩和して、代わりにアップロード可能なファイル全体のファイルサイズの総量に制限を設定することも考えられる。
+          # ここでは簡単化のためにこの制限は設定しないこととする。
+          #
+          # 1048576 = 2^10^2 = 1MB
+          maximum: 1048576
         created_at:
           description: ファイルをアップロードした日時
           type: string
