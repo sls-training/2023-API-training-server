@@ -553,6 +553,13 @@ paths:
   /files/{fileId}:
     get:
       summary: /files/{fileId}/content のエイリアスである。
+      description: |
+        `/files/{fileId}` へのGETリクエストは、`/files{fileId}/content` へのGETリクエストのエイリアスになっている。
+
+        論理的にはファイルリソース(`/files/{fileId}`)は、ファイルの実態であるバイナリ(`/files{fileId}/content`)とそのメタデータ(`/files{fileId}/properties`)から構成されている。
+        また、実用上においても、例えばファイルのバイナリへの直リンクを利用したいといった状況が考えられるため、先の2つのデータが別々のURIで提供する。
+        一方で、直感的には、ファイルリソースは、ファイルの実態であるバイナリとも解釈可能である。
+        よって、ファイルリソースへのGETリクエストでは、ファイルの実態であるバイナリへのGETリクエストと同等であるとして扱っている。
       operationId: GetFile
       responses:
         '200':
