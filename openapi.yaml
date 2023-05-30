@@ -7,7 +7,6 @@ info:
   version: 0.0.0
 
 components:
-  parameters:
   schemas:
     fileProperties:
       type: object
@@ -103,7 +102,35 @@ components:
         エラーに関する対人可読な説明文が格納される。
 
         https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
+    problemDetailsInstance:
+      type: string
+      format: uri-reference
+      description: |
+        エラーが発生したリソースへの相対URIが格納される。
+
+        https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
   responses:
+    notFound:
+      description: リソースが存在しないことを意味する。
+      content:
+        application/problem+json:
+          schema:
+            description: |
+              https://datatracker.ietf.org/doc/html/rfc7807
+              https://datatracker.ietf.org/doc/html/rfc6749#section-7.2
+              https://datatracker.ietf.org/doc/html/rfc6750#section-3.1
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/problemDetailsStatus'
+              title:
+                $ref: '#/components/schemas/problemDetailsTitle'
+              instance:
+                $ref: '#/components/schemas/problemDetailsInstance'
+            required:
+              - status
+              - title
+              - instance
     bearerBadRequest:
       description: 必須パラメータの不足、サポートされていないパラメータ名や値、重複したパラメータ名、複数ないし正しくない認証方法の利用を意味する。
       content:
@@ -212,6 +239,11 @@ components:
                   "error": "insufficient_scope",
                   "scope": "write"
                 }
+  parameters:
+    fileId:
+      name: fileId
+      in: path
+      required: true
   securitySchemes:
     bearer:
       type: http
@@ -520,13 +552,72 @@ paths:
         - bearer: []
   /files/{fileId}:
     get:
-      summary: ファイル名やその説明文、あるいはファイル自身などファイルの情報を返す
+      summary: /files/{fileId}/binary のエイリアスである。
+      operationId: GetFile
+      responses:
+        '200':
+          description: ファイルのバイナリを取得に成功したことを意味する。
+          content:
+            application/octet-stream: {}
+        '400':
+          $ref: '#/components/responses/bearerBadRequest'
+        '401':
+          $ref: '#/components/responses/bearerUnauthorized'
+        '403':
+          $ref: '#/components/responses/bearerForbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+      security:
+        - bearer: []
     patch:
       summary: ファイルの情報を更新する
     delete:
       summary: アップロードされているファイルを削除する
     parameters:
-      - name: fileId
+      - $ref: "#/components/parameters/fileId"
+  /files/{fileId}/properties:
+    get:
+      summary: ファイル名やその説明文などファイルの情報を返す
+      operationId: GetFileProperties
+        '200':
+          description: ファイルの情報の取得に成功したことを意味する。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fileProperties'
+        '400':
+          $ref: '#/components/responses/bearerBadRequest'
+        '401':
+          $ref: '#/components/responses/bearerUnauthorized'
+        '403':
+          $ref: '#/components/responses/bearerForbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+      security:
+        - bearer: []
+    parameters:
+      - $ref: "#/components/parameters/fileId"
+  /files/{fileId}/binary:
+    get:
+      summary: ファイル自身を返す
+      operationId: GetFileBinary
+      responses:
+        '200':
+          description: ファイルのバイナリを取得に成功したことを意味する。
+          content:
+            application/octet-stream: {}
+        '400':
+          $ref: '#/components/responses/bearerBadRequest'
+        '401':
+          $ref: '#/components/responses/bearerUnauthorized'
+        '403':
+          $ref: '#/components/responses/bearerForbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+      security:
+        - bearer: []
+    parameters:
+      - $ref: "#/components/parameters/fileId"
   /user:
     get:
       summary: 現在自分がログインしているユーザの情報を返す
