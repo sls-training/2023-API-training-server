@@ -195,19 +195,26 @@ paths:
 
             よって、これらの前提が変更されれば、ここでサポートされるエラーコードも変更される必要がある。
           content:
-            application/json:
+            application/problem+json:
               schema:
                 type: object
                 properties:
+                  status:
+                    $ref: '#/components/schemas/problemDetailsStatus'
+                  title:
+                    $ref: '#/components/schemas/problemDetailsTitle'
+                  detail:
+                    # NOTE: 役割としては https://datatracker.ietf.org/doc/html/rfc6749#section-5.2 に定義されている任意のフィールドである `error_description` と同様である。
+                    # 場合によっては、互換性のために値は `detail` フィールドと同値である `error_description` フィールドを追加する必要があるかもしれない。
+                    $ref: '#/components/schemas/problemDetailsDetail'
                   error:
                     type: string
                     enum:
                       - invalid_request
                     description: 失敗した理由を示すエラーコードである。
-                  error_description:
-                    type: string
-                    description: 失敗した理由に関する対人可読な追加情報である。
                 required:
+                  - status
+                  - title
                   - error
   /files:
     get:
