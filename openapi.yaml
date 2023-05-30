@@ -17,15 +17,9 @@ components:
           type: string
           format: uuid
         name:
-          description: ファイルの名前
-          type: string
-          minLength: 1
-          maxLength: 128
+          $ref: '#/components/schemas/fileName'
         description:
-          description: ファイルの説明文
-          type: string
-          minLength: 0
-          maxLength: 1024
+          $ref: '#/components/schemas/fileDescription'
         size:
           description: ファイルの容量
           type: integer
@@ -50,6 +44,16 @@ components:
         - size
         - created_at
         - changed_at
+    fileName:
+      description: ファイルの名前
+      type: string
+      minLength: 1
+      maxLength: 128
+    fileDescription:
+      description: ファイルの説明文
+      type: string
+      minLength: 0
+      maxLength: 1024
     error:
       type: object
       properties:
@@ -470,11 +474,9 @@ paths:
               type: object
               properties:
                 name:
-                  type: string
-                  description: アップロードするファイルの名前
+                  $ref: '#/components/schemas/fileName'
                 description:
-                  type: string
-                  description: アップロードするファイルの説明文
+                  $ref: '#/components/schemas/fileDescription'
                 file:
                   type: string
                   format: binary
