@@ -9,7 +9,7 @@ info:
 components:
   parameters:
   schemas:
-    file:
+    fileProperties:
       type: object
       properties:
         id:
@@ -429,7 +429,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/file'
+                  $ref: '#/components/schemas/fileProperties'
               examples:
                 files:
                   summary: サンプルファイル群
@@ -488,7 +488,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/file'
+                $ref: '#/components/schemas/fileProperties'
         '400':
           $ref: '#/components/responses/bearerBadRequest'
         '401':
