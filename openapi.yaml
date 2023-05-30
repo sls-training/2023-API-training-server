@@ -552,7 +552,7 @@ paths:
         - bearer: []
   /files/{fileId}:
     get:
-      summary: /files/{fileId}/binary のエイリアスである。
+      summary: /files/{fileId}/content のエイリアスである。
       operationId: GetFile
       responses:
         '200':
@@ -597,10 +597,10 @@ paths:
         - bearer: []
     parameters:
       - $ref: "#/components/parameters/fileId"
-  /files/{fileId}/binary:
+  /files/{fileId}/content:
     get:
       summary: ファイル自身を返す
-      operationId: GetFileBinary
+      operationId: GetFileContent
       responses:
         '200':
           description: ファイルのバイナリを取得に成功したことを意味する。
