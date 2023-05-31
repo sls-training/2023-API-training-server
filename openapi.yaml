@@ -46,6 +46,16 @@ components:
         gmail:
           summary: Gmailのメールアドレスの例
           value: foo.bar@gmail.com
+    userPassword:
+      description: 作成するユーザを認証するパスワードである。
+      type: string
+      format: password
+      minimum: 16
+      maximum: 128
+      examples:
+        naive_password:
+          summary: 単純なパスワード
+          value: abcdefghijklmnop
     fileProperties:
       type: object
       properties:
@@ -771,15 +781,7 @@ paths:
                 email:
                   $ref: '#/components/schemas/userEmail'
                 password:
-                  description: 作成するユーザを認証するパスワードである。
-                  type: string
-                  format: password
-                  minimum: 16
-                  maximum: 128
-                  examples:
-                    naive_password:
-                      summary: 単純なパスワード
-                      value: abcdefghijklmnop
+                  $ref: '#/components/schemas/userPassword'
               requires:
                 - name
                 - email
