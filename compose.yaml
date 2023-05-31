@@ -1,0 +1,37 @@
+x-app-template: &app-template
+  image: rails_on_docker_2023-api-training-server:0.0.0
+  build: .
+  volumes:
+    - .:/app
+    - bundle:/usr/local/bundle
+  working_dir: /app
+
+services:
+  app:
+    <<: *app-template
+    command: bin/rails server --binding=0.0.0.0
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      POSTGRES_PASSWORD:
+      POSTGRES_USER:
+    tty: true
+    stdin_open: true
+
+  rubocop:
+    <<: *app-template
+    command: bundle exec rubocop --start-server --no-detach
+
+  db:
+    image: postgres:15.3-bullseye
+    environment:
+      POSTGRES_PASSWORD:
+      POSTGRES_USER:
+    volumes:
+      - "db-data:${PGDATA:-/var/lib/postgresql/data}"
+    expose:
+      - "5432"
+
+volumes:
+  bundle:
+  db-data:
