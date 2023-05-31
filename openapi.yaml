@@ -8,6 +8,39 @@ info:
 
 components:
   schemas:
+    userProperties:
+      type: object:
+      properties:
+        name:
+          $ref: '#/components/schemas/userName'
+        email:
+          $ref: '#/components/schemas/userEmail'
+      required:
+        - name
+        - email
+    userName:
+      description: ユーザの表示名である。一意である必要はない。
+      type: string
+      minimum: 1
+      maximum: 64
+      examples:
+        ieyasu:
+          summary: 日本語名
+          value: 徳川家康
+        washington:
+          summary: 英語名
+          value: George Washington
+        anthony:
+          summary: ハンドルネーム
+          value: ad
+    userEmail:
+      description: ユーザを識別するメールアドレスである。一意である必要がある。
+      type: string
+      format: email
+      examples:
+        gmail:
+          summary: Gmailのメールアドレスの例
+          value: foo.bar@gmail.com
     fileProperties:
       type: object
       properties:
@@ -729,28 +762,9 @@ paths:
               type: object
               properties:
                 name:
-                  description: 作成するユーザの表示名である。一意である必要はない。
-                  type: string
-                  minimum: 1
-                  maximum: 64
-                  examples:
-                    ieyasu:
-                      summary: 日本語名
-                      value: 徳川家康
-                    washington:
-                      summary: 英語名
-                      value: George Washington
-                    anthony:
-                      summary: ハンドルネーム
-                      value: ad
+                  $ref: '#/components/schemas/userName'
                 email:
-                  description: 作成するユーザを識別するメールアドレスである。一意である必要がある。
-                  type: string
-                  format: email
-                  examples:
-                    gmail:
-                      summary: Gmailのメールアドレスの例
-                      value: foo.bar@gmail.com
+                  $ref: '#/components/schemas/userEmail'
                 password:
                   description: 作成するユーザを認証するパスワードである。
                   type: string
@@ -768,6 +782,10 @@ paths:
       responses:
         '201':
           description: ユーザ作成に成功したことを意味する。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userProperties'
         '422':
           $ref: '#/components/responses/unprocessableEntity'
     patch:
