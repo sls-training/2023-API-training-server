@@ -52,7 +52,11 @@ components:
       minLength: 1
       maxLength: 128
     fileDescription:
-      description: ファイルの説明文
+      description: |
+        ファイルの説明文である。
+
+        任意の属性であるため、ファイルアップロード時に省略された場合は存在しない値として扱われる。
+        その場合、例えば、ファイルアップロード時などのレスポンスに含まれるファイルのメタデータには、この値を表すフィールドないし値は含まれない。
       type: string
       minLength: 0
       maxLength: 1024
