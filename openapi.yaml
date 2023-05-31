@@ -760,7 +760,21 @@ paths:
       - $ref: "#/components/parameters/fileId"
   /user:
     get:
-      summary: 現在自分がログインしているユーザの情報を返す
+      summary: 提供されたトークンに対応するユーザの情報を返す。
+      operationId: GetUser
+      responses:
+        '200':
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userProperties'
+        '400':
+          $ref: '#/components/responses/bearerBadRequest'
+        '401':
+          $ref: '#/components/responses/bearerUnauthorized'
+        '403':
+          $ref: '#/components/responses/bearerForbidden'
+      security:
+        - bearer: []
     post:
       summary: 新しいユーザを作成する
       operationId: CreateUser
