@@ -282,7 +282,7 @@ paths:
                   description: 要求するアクセストークンのスコープである。
               required:
                 - grant_type
-                - user_name
+                - username
                 - password
         required: true
       responses:
