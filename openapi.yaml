@@ -792,4 +792,21 @@ paths:
     patch:
       summary: 現在自分がログインしているユーザの情報を更新する
     delete:
-      summary: 現在自分がログインしているユーザの情報を削除する
+      summary: 提供されたトークンに対応するユーザの情報を削除する
+      operationId: DeleteUser
+      responses:
+        '204':
+          description: |
+            ユーザの削除に成功したことを意味する。
+
+            同時に、削除したユーザの資格情報を利用して発行された全トークンは失効される。
+        '400':
+          $ref: '#/components/responses/bearerBadRequest'
+        '401':
+          $ref: '#/components/responses/bearerUnauthorized'
+        '403':
+          $ref: '#/components/responses/bearerForbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+      security:
+        - bearer: []
