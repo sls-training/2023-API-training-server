@@ -11,11 +11,16 @@ components:
     userProperties:
       type: object:
       properties:
+        id:
+          description: ユーザのIDである。
+          type: string
+          format: uuid
         name:
           $ref: '#/components/schemas/userName'
         email:
           $ref: '#/components/schemas/userEmail'
       required:
+        - id
         - name
         - email
     userName:
