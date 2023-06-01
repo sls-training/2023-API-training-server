@@ -7,7 +7,6 @@ info:
   version: 0.0.0
 
 components:
-  parameters:
   schemas:
     fileProperties:
       type: object
@@ -115,7 +114,93 @@ components:
         エラーに関する対人可読な説明文が格納される。
 
         https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
+    problemDetailsInstance:
+      type: string
+      format: uri-reference
+      description: |
+        エラーが発生したリソースへの相対URIが格納される。
+
+        https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
   responses:
+    notFound:
+      description: リソースが存在しないことを意味する。
+      content:
+        application/problem+json:
+          schema:
+            description: |
+              https://datatracker.ietf.org/doc/html/rfc7807
+              https://datatracker.ietf.org/doc/html/rfc6749#section-7.2
+              https://datatracker.ietf.org/doc/html/rfc6750#section-3.1
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/problemDetailsStatus'
+              title:
+                $ref: '#/components/schemas/problemDetailsTitle'
+              instance:
+                $ref: '#/components/schemas/problemDetailsInstance'
+            required:
+              - status
+              - title
+              - instance
+    unprocessableEntity:
+      description: パラメータのバリデーションエラーが発生したことを意味する。
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/error'
+          examples:
+            patch_files_fileId_validation_errors:
+              summary: ファイルのメタデータの更新時にいくつかのバリデーションが発生した。
+              value:
+                {
+                  "status": 422,
+                  "title": "Some validation errors for the file",
+                  "errors": [
+                    { "name": "description", "reason": "Too long" },
+                    { "name": "size", "reason": "Too large" }
+                  ]
+                }
+            post_users_empty_name:
+              summary: ユーザの表示名が空白である。
+              value:
+                {
+                  "status": 422,
+                  "title": "Validation error for user",
+                  "errors": [
+                    { "name": "name", "reason": "The name is empty." }
+                  ]
+                }
+            post_users_invalid_email:
+              summary: メールアドレスが不正な形式である。
+              value:
+                {
+                  "status": 422,
+                  "title": "Validation error for user",
+                  "errors": [
+                    { "name": "email", "reason": "The email has an invalid form." }
+                  ]
+                  }
+            post_users_not_unique_email:
+              summary: 同じメールアドレスが既に登録されている。
+              value:
+                {
+                  "status": 422,
+                  "title": "Validation error for user",
+                  "errors": [
+                    { "name": "email", "reason": "The email has already been registered." }
+                  ]
+                }
+            post_users_too_short_password:
+              summary: パスワードが短すぎる。
+              value:
+                {
+                  "status": 422,
+                  "title": "Validation error for user",
+                  "errors": [
+                    { "name": "password", "reason": "The password is too short." }
+                  ]
+                }
     bearerBadRequest:
       description: 必須パラメータの不足、サポートされていないパラメータ名や値、重複したパラメータ名、複数ないし正しくない認証方法の利用を意味する。
       content:
@@ -224,6 +309,11 @@ components:
                   "error": "insufficient_scope",
                   "scope": "write"
                 }
+  parameters:
+    fileId:
+      name: fileId
+      in: path
+      required: true
   securitySchemes:
     bearer:
       type: http
@@ -262,7 +352,7 @@ paths:
                   description: 要求するアクセストークンのスコープである。
               required:
                 - grant_type
-                - user_name
+                - username
                 - password
         required: true
       responses:
@@ -520,32 +610,59 @@ paths:
         '403':
           $ref: '#/components/responses/bearerForbidden'
         '422':
-          description: ポストしたパラメータのバリデーションエラーが発生したことを意味する。
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/error'
-              examples:
-                validation_errors:
-                  {
-                    "status": 422,
-                    "title": "Some validation errors for the file",
-                    "errors": [
-                      { "name": "description", "reason": "Too long" },
-                      { "name": "size", "reason": "Too large" }
-                    ]
-                  }
+          $ref: '#/components/responses/unprocessableEntity'
       security:
         - bearer: []
   /files/{fileId}:
-    get:
-      summary: ファイル名やその説明文、あるいはファイル自身などファイルの情報を返す
     patch:
       summary: ファイルの情報を更新する
     delete:
       summary: アップロードされているファイルを削除する
     parameters:
-      - name: fileId
+      - $ref: "#/components/parameters/fileId"
+  /files/{fileId}/properties:
+    get:
+      summary: ファイル名やその説明文などファイルの情報を返す
+      operationId: GetFileProperties
+        '200':
+          description: ファイルの情報の取得に成功したことを意味する。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fileProperties'
+        '400':
+          $ref: '#/components/responses/bearerBadRequest'
+        '401':
+          $ref: '#/components/responses/bearerUnauthorized'
+        '403':
+          $ref: '#/components/responses/bearerForbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+      security:
+        - bearer: []
+    parameters:
+      - $ref: "#/components/parameters/fileId"
+  /files/{fileId}/content:
+    get:
+      summary: ファイル自身を返す
+      operationId: GetFileContent
+      responses:
+        '200':
+          description: ファイルのバイナリを取得に成功したことを意味する。
+          content:
+            application/octet-stream: {}
+        '400':
+          $ref: '#/components/responses/bearerBadRequest'
+        '401':
+          $ref: '#/components/responses/bearerUnauthorized'
+        '403':
+          $ref: '#/components/responses/bearerForbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+      security:
+        - bearer: []
+    parameters:
+      - $ref: "#/components/parameters/fileId"
   /user:
     get:
       summary: 現在自分がログインしているユーザの情報を返す
@@ -599,52 +716,7 @@ paths:
         '201':
           description: ユーザ作成に成功したことを意味する。
         '422':
-          description: ユーザ作成に失敗したことを意味する。
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/error'
-              examples:
-                empty_name:
-                  summary: ユーザの表示名が空白である。
-                  value:
-                    {
-                      "status": 422,
-                      "title": "Validation error for user",
-                      "errors": [
-                        { "name": "name", "reason": "The name is empty." }
-                      ]
-                    }
-                invalid_email:
-                  summary: メールアドレスが不正な形式である。
-                  value:
-                    {
-                      "status": 422,
-                      "title": "Validation error for user",
-                      "errors": [
-                        { "name": "email", "reason": "The email has an invalid form." }
-                      ]
-                    }
-                not_unique_email:
-                  summary: 同じメールアドレスが既に登録されている。
-                  value:
-                    {
-                      "status": 422,
-                      "title": "Validation error for user",
-                      "errors": [
-                        { "name": "email", "reason": "The email has already been registered." }
-                      ]
-                    }
-                too_short_password:
-                  summary: パスワードが短すぎる。
-                  value:
-                    {
-                      "status": 422,
-                      "title": "Validation error for user",
-                      "errors": [
-                        { "name": "password", "reason": "The password is too short." }
-                      ]
-                    }
+          $ref: '#/components/responses/unprocessableEntity'
     patch:
       summary: 現在自分がログインしているユーザの情報を更新する
     delete:
