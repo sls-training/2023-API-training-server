@@ -651,6 +651,20 @@ paths:
         - bearer: []
     delete:
       summary: アップロードされているファイルを削除する
+      operationId: DeleteFile
+      responses:
+        '204':
+          description: ファイルの削除に成功したことを意味する。
+        '400':
+          $ref: '#/components/responses/bearerBadRequest'
+        '401':
+          $ref: '#/components/responses/bearerUnauthorized'
+        '403':
+          $ref: '#/components/responses/bearerForbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+      security:
+        - bearer: []
     parameters:
       - $ref: "#/components/parameters/fileId"
   /files/{fileId}/properties:
