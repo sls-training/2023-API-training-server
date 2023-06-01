@@ -21,7 +21,12 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
-  host: 'db'
+  # GitHub Actions上でのCI実行時には、コンテナ上で動作しているDBに対して、ローカルホストのポートからアクセスする。
+  # https://docs.github.com/en/actions/using-containerized-services/about-service-containers#running-jobs-on-the-runner-machine
+  #
+  # GitHub Actions上でのCI実行時には、環境変数 CI=true が常に設定されている。
+  # https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+  host: <%= ENV['CI'] == 'true' ? 'localhost' : 'db' %>
   user: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
   port: 5432
