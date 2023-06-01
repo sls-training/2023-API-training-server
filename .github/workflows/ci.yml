@@ -38,6 +38,9 @@ jobs:
       - name: Setup Rails
         run: bin/setup
 
+      - name: Run RSpec
+        run: bundle exec rspec
+
   rubocop:
     runs-on: ubuntu-latest
 
