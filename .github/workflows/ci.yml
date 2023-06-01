@@ -17,6 +17,9 @@ jobs:
     services:
       db:
         image: postgres:15.3-bullseye
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_USER: root
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
