@@ -6,6 +6,5 @@ RUN set -eux; \
     build-essential \
     libpq-dev \
     postgresql-client \
-    imagemagick \
     git \
     ; \

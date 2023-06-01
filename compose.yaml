@@ -1,5 +1,5 @@
 x-app-template: &app-template
-  image: rails_on_docker_2023-api-training-server:0.0.0
+  image: rails_on_docker_2023-api-training-server:0.1.0
   build: .
   volumes:
     - .:/app
