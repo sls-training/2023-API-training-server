@@ -9,6 +9,68 @@ info:
 components:
   parameters:
   schemas:
+    fileProperties:
+      type: object
+      properties:
+        id:
+          description: ファイルのID
+          type: string
+          format: uuid
+        name:
+          $ref: '#/components/schemas/fileName'
+        description:
+          $ref: '#/components/schemas/fileDescription'
+        size:
+          description: ファイルの容量
+          type: integer
+          format: int64
+        created_at:
+          description: ファイルをアップロードした日時
+          type: string
+          format: date-time
+        changed_at:
+          description: ファイルの最終更新日時
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - size
+        - created_at
+        - changed_at
+    fileName:
+      description: |
+        ファイルの表示名を表す。
+
+        この値は、同一のユーザがアップロードしたファイル間で一意である必要がある。
+        ファイルのアップロードやメタデータの更新時に重複した値を指定した場合は、値の不備を理由にエラーレスポンスを返す。
+
+        ファイルアップロード時にこの値を省略した場合は、アップロードされたファイルのファイル名が指定されたものとして処理される。
+        その際、アップロード済みである他のファイルのファイル名と重複していた場合は `(1)` 、 `(2)` のようにバージョニングされたファイル名になる。
+        なお、アップロード済みである他のファイルのファイル名は変更されない。
+      type: string
+      minLength: 1
+      maxLength: 128
+    fileDescription:
+      description: |
+        ファイルの説明文である。
+
+        任意の属性であるため、ファイルアップロード時に省略された場合は存在しない値として扱われる。
+        その場合、例えば、ファイルアップロード時などのレスポンスに含まれるファイルのメタデータには、この値を表すフィールドないし値は含まれない。
+      type: string
+      minLength: 0
+      maxLength: 1024
+    file:
+      description: ファイル自身のバイナリ
+      type: string
+      contentMediaType: application/octet-stream
+      contentEncoding: binary
+      minimum: 0
+      # 上限を緩和して、代わりにアップロード可能なファイル全体のファイルサイズの総量に制限を設定することも考えられる。
+      # ここでは簡単化のためにこの制限は設定しないこととする。
+      #
+      # 1048576 = 2^10^2 = 1MB
+      maximum: 1048576
     error:
       type: object
       properties:
@@ -53,6 +115,115 @@ components:
         エラーに関する対人可読な説明文が格納される。
 
         https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
+  responses:
+    bearerBadRequest:
+      description: 必須パラメータの不足、サポートされていないパラメータ名や値、重複したパラメータ名、複数ないし正しくない認証方法の利用を意味する。
+      content:
+        application/problem+json:
+          schema:
+            description: |
+              https://datatracker.ietf.org/doc/html/rfc7807
+              https://datatracker.ietf.org/doc/html/rfc6749#section-7.2
+              https://datatracker.ietf.org/doc/html/rfc6750#section-3.1
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/problemDetailsStatus'
+              title:
+                $ref: '#/components/schemas/problemDetailsTitle'
+              error:
+                type: string
+                enum:
+                  - invalid_request
+                description: エラー内容を示すエラーコードが格納される。
+            required:
+              - status
+              - title
+              - error
+            examples:
+              missing_required_parameters:
+                summary: 必須パラメータが不足している。
+                value:
+                  {
+                    "status": 400,
+                    "title": "Missing required parameters",
+                    "error": "invalid_request"
+                  }
+    bearerUnauthorized:
+      description: |
+        アクセストークンがない、あるいは失効や有効期限切れなどによる有効でないアクセストークンによるアクセスを意味する。
+
+        なお、トークンがない場合や認証方式が誤っている場合は、レスポンスボディには何も含まれないことに注意する。
+        この仕様は [3.1. Error Codes | OAuth 2.0 Bearer Token Usage](https://datatracker.ietf.org/doc/html/rfc6750#section-3.1) で推奨されている。
+      content:
+        application/problem+json:
+          schema:
+            description: |
+              https://datatracker.ietf.org/doc/html/rfc7807
+              https://datatracker.ietf.org/doc/html/rfc6749#section-7.2
+              https://datatracker.ietf.org/doc/html/rfc6750#section-3.1
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/problemDetailsStatus'
+              title:
+                $ref: '#/components/schemas/problemDetailsTitle'
+              error:
+                type: string
+                enum:
+                  - invalid_token
+                description: エラー内容を示すエラーコードが格納される。
+            required:
+              - status
+              - title
+              - error
+          examples:
+            invalid_token:
+              summary: 不正なトークンによるアクセスを試みた場合。
+              value:
+                {
+                  "status": 401,
+                  "title": "An access with an invalid access token",
+                  "error": "invalid_token"
+                }
+    bearerForbidden:
+      description: 送信したアクセストークンの権限の不足を意味する。
+      content:
+        application/problem+json:
+          schema:
+            description: |
+              https://datatracker.ietf.org/doc/html/rfc7807
+              https://datatracker.ietf.org/doc/html/rfc6749#section-7.2
+              https://datatracker.ietf.org/doc/html/rfc6750#section-3.1
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/problemDetailsStatus'
+              title:
+                $ref: '#/components/schemas/problemDetailsTitle'
+              error:
+                type: string
+                enum:
+                  - insufficient_scope
+                description: エラー内容を示すエラーコードが格納される。
+              scope:
+                type: string
+                description: 保護されたリソースへのアクセスに必要なスコープが格納される。
+            required:
+              - status
+              - title
+              - error
+              - scope
+          examples:
+            insufficient_scope:
+              summary: アクセストークンの権限が不足している場合。
+              value:
+                {
+                  "status": 403,
+                  "title": "The access token only has insufficient scopes",
+                  "error": "insufficient_scope",
+                  "scope": "write"
+                }
   securitySchemes:
     bearer:
       type: http
@@ -286,36 +457,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      description: アップロードしたファイルのID
-                      type: string
-                      format: uuid
-                    name:
-                      description: アップロードしたファイルの名前
-                      type: string
-                    description:
-                      description: アップロードしたファイルの説明文
-                      type: string
-                    size:
-                      description: アップロードしたファイルの容量
-                      type: integer
-                      format: int64
-                    created_at:
-                      description: ファイルをアップロードした日時
-                      type: string
-                      format: date-time
-                    changed_at:
-                      description: アップロードしたファイルの最終更新日時
-                      type: string
-                      format: date-time
-                  required:
-                    - id
-                    - name
-                    - size
-                    - created_at
-                    - changed_at
+                  $ref: '#/components/schemas/fileProperties'
               examples:
                 files:
                   summary: サンプルファイル群
@@ -338,117 +480,63 @@ paths:
                       }
                     ]
         '400':
-          description: 必須パラメータの不足、サポートされていないパラメータ名や値、重複したパラメータ名、複数ないし正しくない認証方法の利用を意味する。
-          content:
-            application/problem+json:
-              schema:
-                description: |
-                  https://datatracker.ietf.org/doc/html/rfc7807
-                  https://datatracker.ietf.org/doc/html/rfc6749#section-7.2
-                  https://datatracker.ietf.org/doc/html/rfc6750#section-3.1
-                type: object
-                properties:
-                  status:
-                    $ref: '#/components/schemas/problemDetailsStatus'
-                  title:
-                    $ref: '#/components/schemas/problemDetailsTitle'
-                  error:
-                    type: string
-                    enum:
-                      - invalid_request
-                    description: エラー内容を示すエラーコードが格納される。
-                required:
-                  - status
-                  - title
-                  - error
-              examples:
-                missing_required_parameters:
-                  summary: 必須パラメータが不足している。
-                  value:
-                    {
-                      "status": 400,
-                      "title": "Missing required parameters",
-                      "error": "invalid_request"
-                    }
+          $ref: '#/components/responses/bearerBadRequest'
         '401':
-          description: |
-            アクセストークンがない、あるいは失効や有効期限切れなどによる有効でないアクセストークンによるアクセスを意味する。
-
-            なお、トークンがない場合や認証方式が誤っている場合は、レスポンスボディには何も含まれないことに注意する。
-            この仕様は [3.1. Error Codes | OAuth 2.0 Bearer Token Usage](https://datatracker.ietf.org/doc/html/rfc6750#section-3.1) で推奨されている。
-          content:
-            application/problem+json:
-              schema:
-                description: |
-                  https://datatracker.ietf.org/doc/html/rfc7807
-                  https://datatracker.ietf.org/doc/html/rfc6749#section-7.2
-                  https://datatracker.ietf.org/doc/html/rfc6750#section-3.1
-                type: object
-                properties:
-                  status:
-                    $ref: '#/components/schemas/problemDetailsStatus'
-                  title:
-                    $ref: '#/components/schemas/problemDetailsTitle'
-                  error:
-                    type: string
-                    enum:
-                      - invalid_token
-                    description: エラー内容を示すエラーコードが格納される。
-                required:
-                  - status
-                  - title
-                  - error
-              examples:
-                invalid_token:
-                  summary: 不正なトークンによるアクセスを試みた場合。
-                  value:
-                    {
-                      "status": 401,
-                      "title": "An access with an invalid access token",
-                      "error": "invalid_token"
-                    }
+          $ref: '#/components/responses/bearerUnauthorized'
         '403':
-          description: 送信したアクセストークンの権限の不足を意味する。
-          content:
-            application/problem+json:
-              schema:
-                description: |
-                  https://datatracker.ietf.org/doc/html/rfc7807
-                  https://datatracker.ietf.org/doc/html/rfc6749#section-7.2
-                  https://datatracker.ietf.org/doc/html/rfc6750#section-3.1
-                type: object
-                properties:
-                  status:
-                    $ref: '#/components/schemas/problemDetailsStatus'
-                  title:
-                    $ref: '#/components/schemas/problemDetailsTitle'
-                  error:
-                    type: string
-                    enum:
-                      - insufficient_scope
-                    description: エラー内容を示すエラーコードが格納される。
-                  scope:
-                    type: string
-                    description: 保護されたリソースへのアクセスに必要なスコープが格納される。
-                required:
-                  - status
-                  - title
-                  - error
-                  - scope
-              examples:
-                insufficient_scope:
-                  summary: アクセストークンの権限が不足している場合。
-                  value:
-                    {
-                      "status": 403,
-                      "title": "The access token only has insufficient scopes",
-                      "error": "insufficient_scope",
-                      "scope": "write"
-                    }
+          $ref: '#/components/responses/bearerForbidden'
       security:
         - bearer: []
     post:
       summary: 新しいファイルをアップロードする
+      operationId: UploadFile
+      requestBody:
+        description: アップロードする新しいファイルやそのメタデータを格納する。
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: '#/components/schemas/fileName'
+                description:
+                  $ref: '#/components/schemas/fileDescription'
+                file:
+                  $ref: '#/components/schemas/file'
+              required:
+                - file
+        required: true
+      responses:
+        '201':
+          description: ファイルのアップロードに成功したことを意味する。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fileProperties'
+        '400':
+          $ref: '#/components/responses/bearerBadRequest'
+        '401':
+          $ref: '#/components/responses/bearerUnauthorized'
+        '403':
+          $ref: '#/components/responses/bearerForbidden'
+        '422':
+          description: ポストしたパラメータのバリデーションエラーが発生したことを意味する。
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                validation_errors:
+                  {
+                    "status": 422,
+                    "title": "Some validation errors for the file",
+                    "errors": [
+                      { "name": "description", "reason": "Too long" },
+                      { "name": "size", "reason": "Too large" }
+                    ]
+                  }
+      security:
+        - bearer: []
   /files/{fileId}:
     get:
       summary: ファイル名やその説明文、あるいはファイル自身などファイルの情報を返す
