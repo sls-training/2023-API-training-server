@@ -242,6 +242,7 @@ DEPENDENCIES
   rspec-rails (~> 6.0.2)
   rubocop (~> 1.51)
   rubocop-config-timedia!
+  rubocop-factory_bot (~> 2.23.1)
   rubocop-performance (~> 1.18)
   rubocop-rails (~> 2.19.1)
   rubocop-rspec (~> 2.22)
