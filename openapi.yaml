@@ -616,6 +616,39 @@ paths:
   /files/{fileId}:
     patch:
       summary: ファイルの情報を更新する
+      operationId: PatchFile
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              description: 必須パラメータ自体は存在しないが、パラメータがない場合はパラメータの不備を理由に400(Bad Request)を返す。
+              type: object
+              properties:
+                name:
+                  $ref: '#/components/schemas/fileName'
+                description:
+                  $ref: '#/components/schemas/fileDescription'
+                file:
+                  $ref: '#/components/schemas/file'
+      responses:
+        '200':
+          description: ファイルの更新に成功したことを意味する。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fileProperties'
+        '400':
+          $ref: '#/components/responses/bearerBadRequest'
+        '401':
+          $ref: '#/components/responses/bearerUnauthorized'
+        '403':
+          $ref: '#/components/responses/bearerForbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+      security:
+        - bearer: []
     delete:
       summary: アップロードされているファイルを削除する
     parameters:
