@@ -86,12 +86,24 @@ components:
         - created_at
         - changed_at
     fileName:
-      description: ファイルの名前
+      description: |
+        ファイルの表示名を表す。
+
+        この値は、同一のユーザがアップロードしたファイル間で一意である必要がある。
+        ファイルのアップロードやメタデータの更新時に重複した値を指定した場合は、値の不備を理由にエラーレスポンスを返す。
+
+        ファイルアップロード時にこの値を省略した場合は、アップロードされたファイルのファイル名が指定されたものとして処理される。
+        その際、アップロード済みである他のファイルのファイル名と重複していた場合は `(1)` 、 `(2)` のようにバージョニングされたファイル名になる。
+        なお、アップロード済みである他のファイルのファイル名は変更されない。
       type: string
       minLength: 1
       maxLength: 128
     fileDescription:
-      description: ファイルの説明文
+      description: |
+        ファイルの説明文である。
+
+        任意の属性であるため、ファイルアップロード時に省略された場合は存在しない値として扱われる。
+        その場合、例えば、ファイルアップロード時などのレスポンスに含まれるファイルのメタデータには、この値を表すフィールドないし値は含まれない。
       type: string
       minLength: 0
       maxLength: 1024
@@ -496,19 +508,26 @@ paths:
 
             よって、これらの前提が変更されれば、ここでサポートされるエラーコードも変更される必要がある。
           content:
-            application/json:
+            application/problem+json:
               schema:
                 type: object
                 properties:
+                  status:
+                    $ref: '#/components/schemas/problemDetailsStatus'
+                  title:
+                    $ref: '#/components/schemas/problemDetailsTitle'
+                  detail:
+                    # NOTE: 役割としては https://datatracker.ietf.org/doc/html/rfc6749#section-5.2 に定義されている任意のフィールドである `error_description` と同様である。
+                    # 場合によっては、互換性のために値は `detail` フィールドと同値である `error_description` フィールドを追加する必要があるかもしれない。
+                    $ref: '#/components/schemas/problemDetailsDetail'
                   error:
                     type: string
                     enum:
                       - invalid_request
                     description: 失敗した理由を示すエラーコードである。
-                  error_description:
-                    type: string
-                    description: 失敗した理由に関する対人可読な追加情報である。
                 required:
+                  - status
+                  - title
                   - error
   /files:
     get:
@@ -643,31 +662,6 @@ paths:
       security:
         - bearer: []
   /files/{fileId}:
-    get:
-      summary: /files/{fileId}/content のエイリアスである。
-      description: |
-        `/files/{fileId}` へのGETリクエストは、`/files{fileId}/content` へのGETリクエストのエイリアスになっている。
-
-        論理的にはファイルリソース(`/files/{fileId}`)は、ファイルの実態であるバイナリ(`/files{fileId}/content`)とそのメタデータ(`/files{fileId}/properties`)から構成されている。
-        また、実用上においても、例えばファイルのバイナリへの直リンクを利用したいといった状況が考えられるため、先の2つのデータが別々のURIで提供する。
-        一方で、直感的には、ファイルリソースは、ファイルの実態であるバイナリとも解釈可能である。
-        よって、ファイルリソースへのGETリクエストでは、ファイルの実態であるバイナリへのGETリクエストと同等であるとして扱っている。
-      operationId: GetFile
-      responses:
-        '200':
-          description: ファイルのバイナリを取得に成功したことを意味する。
-          content:
-            application/octet-stream: {}
-        '400':
-          $ref: '#/components/responses/bearerBadRequest'
-        '401':
-          $ref: '#/components/responses/bearerUnauthorized'
-        '403':
-          $ref: '#/components/responses/bearerForbidden'
-        '404':
-          $ref: '#/components/responses/notFound'
-      security:
-        - bearer: []
     patch:
       summary: ファイルの情報を更新する
       operationId: PatchFile
