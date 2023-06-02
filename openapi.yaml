@@ -209,46 +209,6 @@ components:
                     { "name": "size", "reason": "Too large" }
                   ]
                 }
-            post_users_empty_name:
-              summary: ユーザの表示名が空白である。
-              value:
-                {
-                  "status": 422,
-                  "title": "Validation error for user",
-                  "errors": [
-                    { "name": "name", "reason": "The name is empty." }
-                  ]
-                }
-            post_users_invalid_email:
-              summary: メールアドレスが不正な形式である。
-              value:
-                {
-                  "status": 422,
-                  "title": "Validation error for user",
-                  "errors": [
-                    { "name": "email", "reason": "The email has an invalid form." }
-                  ]
-                  }
-            post_users_not_unique_email:
-              summary: 同じメールアドレスが既に登録されている。
-              value:
-                {
-                  "status": 422,
-                  "title": "Validation error for user",
-                  "errors": [
-                    { "name": "email", "reason": "The email has already been registered." }
-                  ]
-                }
-            post_users_too_short_password:
-              summary: パスワードが短すぎる。
-              value:
-                {
-                  "status": 422,
-                  "title": "Validation error for user",
-                  "errors": [
-                    { "name": "password", "reason": "The password is too short." }
-                  ]
-                }
     bearerBadRequest:
       description: 必須パラメータの不足、サポートされていないパラメータ名や値、重複したパラメータ名、複数ないし正しくない認証方法の利用を意味する。
       content:
