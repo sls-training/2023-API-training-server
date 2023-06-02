@@ -154,8 +154,10 @@ components:
       type: string
       description: |
         エラーに関する対人可読な短い説明文が格納される。
+        値は、 `status` フィールドの値であるHTTPステータスに対応する文言(Bad RequestやNot Found等)である。
 
         https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
+        https://datatracker.ietf.org/doc/html/rfc7807#section-4.2
     problemDetailsDetail:
       type: string
       description: |
