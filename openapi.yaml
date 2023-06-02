@@ -796,7 +796,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              description: 必須パラメータ自体は存在しないが、パラメータがない場合はパラメータの不備を理由に400(Bad Request)を返す。
+              description: パラメータが一つも指定されていない場合は400(Bad Request)を返す。
               type: object
               properties:
                 name:
