@@ -804,6 +804,39 @@ paths:
         '422':
           $ref: '#/components/responses/unprocessableEntity'
     patch:
-      summary: 現在自分がログインしているユーザの情報を更新する
+      summary: 提供されたトークンに対応するユーザの情報を更新する
+      operationId: PatchUser
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              description: パラメータが一つも指定されていない場合は400(Bad Request)を返す。
+              type: object
+              properties:
+                name:
+                  $ref: '#/components/schemas/userName'
+                email:
+                  $ref: '#/components/schemas/userEmail'
+                password:
+                  $ref: '#/components/schemas/userPassword'
+      responses:
+        '200':
+          description: ユーザ情報の更新に成功したことを意味する。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userProperties'
+        '400':
+          $ref: '#/components/responses/bearerBadRequest'
+        '401':
+          $ref: '#/components/responses/bearerUnauthorized'
+        '403':
+          $ref: '#/components/responses/bearerForbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+      security:
+        - bearer: []
     delete:
       summary: 現在自分がログインしているユーザの情報を削除する
