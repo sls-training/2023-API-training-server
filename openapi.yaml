@@ -764,9 +764,11 @@ paths:
       operationId: GetUser
       responses:
         '200':
-          application/json:
-            schema:
-              $ref: '#/components/schemas/userProperties'
+          description: ユーザ情報の取得に成功したことを示す。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userProperties'
         '400':
           $ref: '#/components/responses/bearerBadRequest'
         '401':
