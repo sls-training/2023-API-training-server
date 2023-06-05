@@ -719,6 +719,7 @@ paths:
     get:
       summary: ファイル名やその説明文などファイルの情報を返す
       operationId: GetFileProperties
+      responses:
         '200':
           description: ファイルの情報の取得に成功したことを意味する。
           content:
