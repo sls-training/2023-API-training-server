@@ -9,7 +9,7 @@ info:
 components:
   schemas:
     userProperties:
-      type: object:
+      type: object
       properties:
         id:
           description: ユーザのIDである。
