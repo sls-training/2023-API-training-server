@@ -1,0 +1,7 @@
+---
+:output_color: :force
+:pager: false
+:run_all_checks: true
+:skip_checks:
+# 本アプリケーションは本番環境にデプロイされることを想定していないため、HTTPSを有効化しなくても問題ない。
+- CheckForceSSL
