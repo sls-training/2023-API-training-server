@@ -205,7 +205,7 @@ components:
               value:
                 {
                   "status": 422,
-                  "title": "Some validation errors for the file",
+                  "title": "Unprocessable Entity",
                   "errors": [
                     { "name": "description", "reason": "Too long" },
                     { "name": "size", "reason": "Too large" }
@@ -241,7 +241,7 @@ components:
                 value:
                   {
                     "status": 400,
-                    "title": "Missing required parameters",
+                    "title": "Bad Request",
                     "error": "invalid_request"
                   }
     bearerUnauthorized:
@@ -278,7 +278,7 @@ components:
               value:
                 {
                   "status": 401,
-                  "title": "An access with an invalid access token",
+                  "title": "Unauthorized",
                   "error": "invalid_token"
                 }
     bearerForbidden:
@@ -315,7 +315,7 @@ components:
               value:
                 {
                   "status": 403,
-                  "title": "The access token only has insufficient scopes",
+                  "title": "Forbidden",
                   "error": "insufficient_scope",
                   "scope": "write"
                 }
