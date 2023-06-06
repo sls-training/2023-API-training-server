@@ -20,6 +20,10 @@ AllCops:
     - public/**/*
     - storage/**/*
 
+Metrics/MethodLength:
+  # デフォルト値は10だが、これを遵守するのは困難である。特にコントローラで顕著である。
+  Max: 20
+
 RSpec/ExampleLength:
   CountAsOne:
     - array
