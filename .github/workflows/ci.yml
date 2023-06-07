@@ -67,6 +67,23 @@ jobs:
       - name: Run Brakeman
         run: bundle exec brakeman
 
+  openapi-validator:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.2.0
+          cache: npm
+
+      - name: Install OpenAPI Validator
+        run: npm install -g ibm-openapi-validator@1.1.1
+
+      - name: Run OpenAPI Validator
+        run: lint-openapi openapi.yaml
+
   actionlint:
     runs-on: ubuntu-latest
 
