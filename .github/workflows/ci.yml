@@ -87,6 +87,9 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit == 'false'
         run: npm install -g ibm-openapi-validator@1.1.1
 
+      - name: Add a path for OpenAPI Validator
+        run: echo ~/.node_modules/bin >> "$GITHUB_PATH"
+
       - name: Run OpenAPI Validator
         run: lint-openapi openapi.yaml
 
