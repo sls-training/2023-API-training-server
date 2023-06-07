@@ -84,7 +84,7 @@ jobs:
           key: openapi-validator
 
       - name: Install OpenAPI Validator
-        if: steps.cache-node-modules.outputs.cache-hit == 'false'
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm install -g ibm-openapi-validator@1.1.1
 
       - name: Add a path for OpenAPI Validator
