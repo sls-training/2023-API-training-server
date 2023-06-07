@@ -227,15 +227,15 @@ components:
               - status
               - title
               - error
-            examples:
-              missing_required_parameters:
-                summary: 必須パラメータが不足している。
-                value:
-                  {
-                    "status": 400,
-                    "title": "Bad Request",
-                    "error": "invalid_request"
-                  }
+          examples:
+            missing_required_parameters:
+              summary: 必須パラメータが不足している。
+              value:
+                {
+                  "status": 400,
+                  "title": "Bad Request",
+                  "error": "invalid_request"
+                }
     bearerUnauthorized:
       description: |
         アクセストークンがない、あるいは失効や有効期限切れなどによる有効でないアクセストークンによるアクセスを意味する。
