@@ -154,8 +154,10 @@ components:
       type: string
       description: |
         エラーに関する対人可読な短い説明文が格納される。
+        値は、 `status` フィールドの値であるHTTPステータスに対応する文言(Bad RequestやNot Found等)である。
 
         https://datatracker.ietf.org/doc/html/rfc7807#section-3.1
+        https://datatracker.ietf.org/doc/html/rfc7807#section-4.2
     problemDetailsDetail:
       type: string
       description: |
@@ -203,7 +205,7 @@ components:
               value:
                 {
                   "status": 422,
-                  "title": "Some validation errors for the file",
+                  "title": "Unprocessable Entity",
                   "errors": [
                     { "name": "description", "reason": "Too long" },
                     { "name": "size", "reason": "Too large" }
@@ -239,7 +241,7 @@ components:
                 value:
                   {
                     "status": 400,
-                    "title": "Missing required parameters",
+                    "title": "Bad Request",
                     "error": "invalid_request"
                   }
     bearerUnauthorized:
@@ -276,7 +278,7 @@ components:
               value:
                 {
                   "status": 401,
-                  "title": "An access with an invalid access token",
+                  "title": "Unauthorized",
                   "error": "invalid_token"
                 }
     bearerForbidden:
@@ -313,7 +315,7 @@ components:
               value:
                 {
                   "status": 403,
-                  "title": "The access token only has insufficient scopes",
+                  "title": "Forbidden",
                   "error": "insufficient_scope",
                   "scope": "write"
                 }
