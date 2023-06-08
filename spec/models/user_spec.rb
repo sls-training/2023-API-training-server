@@ -15,7 +15,7 @@ RSpec.describe User, type: :model do
       user.name = nil
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context '名前が空文字列のとき' do
@@ -23,7 +23,7 @@ RSpec.describe User, type: :model do
       user.name = ''
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context '名前の文字数が最小のとき' do
@@ -47,7 +47,7 @@ RSpec.describe User, type: :model do
       user.name = 'a' * 65
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context '名前がスペースのみで構成されているとき' do
@@ -55,7 +55,7 @@ RSpec.describe User, type: :model do
       user.name = ' '
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context 'メールアドレスがnilのとき' do
@@ -63,7 +63,7 @@ RSpec.describe User, type: :model do
       user.email = nil
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context 'メールアドレスが空文字列のとき' do
@@ -71,7 +71,7 @@ RSpec.describe User, type: :model do
       user.email = ''
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   it '正しいフォーマットのメールアドレスを許容する' do
@@ -98,7 +98,7 @@ RSpec.describe User, type: :model do
       user.dup.save!
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context '大文字小文字違いのメールアドレスを持つユーザが存在する場合' do
@@ -108,7 +108,7 @@ RSpec.describe User, type: :model do
       another_user.save!
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context 'パスワードが空文字のとき' do
@@ -116,7 +116,7 @@ RSpec.describe User, type: :model do
       user.password = user.password_confirmation = ''
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
 
     it 'DBへの保存に失敗する' do
       expect(user.save).not_to be_truthy
@@ -128,7 +128,7 @@ RSpec.describe User, type: :model do
       user.password = user.password_confirmation = nil
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context 'パスワードがスペースのみで構成される場合' do
@@ -136,7 +136,7 @@ RSpec.describe User, type: :model do
       user.password = user.password_confirmation = ' ' * 16
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context 'パスワードが短すぎるとき' do
@@ -144,7 +144,7 @@ RSpec.describe User, type: :model do
       user.password = user.password_confirmation = 'a' * 14
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context 'パスワード長が最短のとき' do
@@ -152,7 +152,7 @@ RSpec.describe User, type: :model do
       user.password = user.password_confirmation = 'a' * 15
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context 'パスワードが最長のとき' do
@@ -160,7 +160,7 @@ RSpec.describe User, type: :model do
       user.password = user.password_confirmation = 'a' * 128
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context 'パスワードが長すぎるとき' do
@@ -168,7 +168,7 @@ RSpec.describe User, type: :model do
       user.password = user.password_confirmation = 'a' * 129
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 
   context 'パスワード確認がnilのとき' do
@@ -176,6 +176,6 @@ RSpec.describe User, type: :model do
       user.password_confirmation = nil
     end
 
-    it { is_expected.not_to be_valid }
+    it { is_expected.to be_invalid }
   end
 end
