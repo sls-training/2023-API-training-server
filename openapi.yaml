@@ -60,9 +60,7 @@ components:
       type: object
       properties:
         id:
-          description: ファイルのID
-          type: string
-          format: uuid
+          $ref: '#/components/schemas/fileId'
         name:
           $ref: '#/components/schemas/fileName'
         description:
@@ -85,6 +83,10 @@ components:
         - size
         - created_at
         - changed_at
+    fileId:
+      description: ファイルのID
+      type: string
+      format: uuid
     fileName:
       description: |
         ファイルの表示名を表す。
@@ -324,6 +326,8 @@ components:
       name: fileId
       in: path
       required: true
+      schema:
+        $ref: '#/components/schemas/fileId'
   securitySchemes:
     bearer:
       type: http
