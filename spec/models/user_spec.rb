@@ -52,7 +52,7 @@ RSpec.describe User, type: :model do
 
   context '名前がスペースのみで構成されているとき' do
     before do
-      user.name = ' ' * 1
+      user.name = ' '
     end
 
     it { is_expected.not_to be_valid }
