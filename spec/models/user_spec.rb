@@ -123,21 +123,21 @@ RSpec.describe User, type: :model do
     end
 
     context '短すぎるとき' do
-      let(:password) { 'a' * 14 }
-
-      it { is_expected.to be_invalid }
-    end
-
-    context '最短のとき' do
       let(:password) { 'a' * 15 }
 
       it { is_expected.to be_invalid }
     end
 
+    context '最短のとき' do
+      let(:password) { 'a' * 16 }
+
+      it { is_expected.to be_valid }
+    end
+
     context '最長のとき' do
       let(:password) { 'a' * 128 }
 
-      it { is_expected.to be_invalid }
+      it { is_expected.to be_valid }
     end
 
     context '長すぎるとき' do
