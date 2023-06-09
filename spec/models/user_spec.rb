@@ -24,19 +24,19 @@ RSpec.describe User, type: :model do
       it { is_expected.to be_invalid }
     end
 
-    context '文字数が最小のとき' do
+    context '文字列長が最短のとき' do
       let(:name) { 'a' }
 
       it { is_expected.to be_valid }
     end
 
-    context '文字数が最長のとき' do
+    context '文字列長が最長のとき' do
       let(:name) { 'a' * 64 }
 
       it { is_expected.to be_valid }
     end
 
-    context '長すぎるとき' do
+    context '文字列長が長すぎるとき' do
       let(:name) { 'a' * 65 }
 
       it { is_expected.to be_invalid }
@@ -118,25 +118,25 @@ RSpec.describe User, type: :model do
       it { is_expected.to be_invalid }
     end
 
-    context '短すぎるとき' do
+    context '文字列長が短すぎるとき' do
       let(:password) { 'a' * 15 }
 
       it { is_expected.to be_invalid }
     end
 
-    context '最短のとき' do
+    context '文字列長が最短のとき' do
       let(:password) { 'a' * 16 }
 
       it { is_expected.to be_valid }
     end
 
-    context '最長のとき' do
+    context '文字列長が最長のとき' do
       let(:password) { 'a' * 128 }
 
       it { is_expected.to be_valid }
     end
 
-    context '長すぎるとき' do
+    context '文字列長が長すぎるとき' do
       let(:password) { 'a' * 129 }
 
       it { is_expected.to be_invalid }
