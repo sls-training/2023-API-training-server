@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     if user.save
       render json: UserResource.new(user), status: :created
     else
-      render problem: { errors: format_errors(user.errors) }, status: :unprocessable_entity
+      render problem: { errors: ActiveModel::ErrorsDecorator.new(user.errors).to_a }, status: :unprocessable_entity
     end
   end
 
@@ -27,15 +27,6 @@ class UsersController < ApplicationController
     # ActionController::Parameters クラスのメソッドをチェーンで呼ぶことができない。
     params.require(keys)
     params.permit(keys)
-  end
-
-  # ActiveModel::Errors クラスのオブジェクトをエラーレスポンス用の形式に変換する。
-  #
-  # TODO: helper等に移動させる。
-  def format_errors(errors)
-    errors.messages.each.map do |name, reasons|
-      reasons.map { |reason| { name:, reason: } }
-    end.flatten
   end
 
   # ActionController::ParameterMissing クラスのオブジェクトをエラーレスポンス用の形式に変換する。
