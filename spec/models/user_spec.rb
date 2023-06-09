@@ -74,7 +74,7 @@ RSpec.describe User, type: :model do
 
     invalid_addresses.each do |invalid_address|
       user.email = invalid_address
-      expect(user).not_to be_valid
+      expect(user).to be_invalid
     end
   end
 
@@ -102,7 +102,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to be_invalid }
 
     it 'DBへの保存に失敗する' do
-      expect(user.save).not_to be_truthy
+      expect(user.save).to be_falsey
     end
   end
 
