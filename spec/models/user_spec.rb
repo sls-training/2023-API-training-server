@@ -70,15 +70,17 @@ RSpec.describe User, type: :model do
       it { is_expected.to be_valid }
     end
 
-    it '不正なフォーマットを拒否する' do
-      invalid_addresses = %w[
-        user@example,com user_at_foo.org user.name@example.
-        foo@bar_baz.com foo@bar+baz.com foo@bar..com
-      ]
+    context '不正なフォーマットのとき' do
+      it '検証に失敗する' do
+        invalid_addresses = %w[
+          user@example,com user_at_foo.org user.name@example.
+          foo@bar_baz.com foo@bar+baz.com foo@bar..com
+        ]
 
-      invalid_addresses.each do |invalid_address|
-        user.email = invalid_address
-        expect(user).to be_invalid
+        invalid_addresses.each do |invalid_address|
+          user.email = invalid_address
+          expect(user).to be_invalid
+        end
       end
     end
 
