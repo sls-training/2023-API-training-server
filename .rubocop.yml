@@ -19,3 +19,9 @@ AllCops:
     - log/**/*
     - public/**/*
     - storage/**/*
+
+RSpec/ExampleLength:
+  CountAsOne:
+    - array
+    - hash
+    - heredoc

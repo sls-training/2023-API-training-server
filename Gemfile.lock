@@ -79,6 +79,7 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
     ast (2.4.2)
+    bcrypt (3.1.18)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     brakeman (6.0.0)
@@ -96,6 +97,8 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
+    faker (3.2.0)
+      i18n (>= 1.8.11, < 2)
     globalid (1.1.0)
       activesupport (>= 5.0)
     i18n (1.13.0)
@@ -234,10 +237,12 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  bcrypt (~> 3.1.18)
   bootsnap
   brakeman (~> 6.0)
   debug
   factory_bot_rails (~> 6.2)
+  faker (~> 3.2)
   pg (~> 1.1)
   puma (~> 6.3)
   rails (~> 7.0.5)
