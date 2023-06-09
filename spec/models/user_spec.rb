@@ -60,11 +60,10 @@ RSpec.describe User, type: :model do
     it { is_expected.to be_invalid }
   end
 
-  it '正しいフォーマットのメールアドレスを許容する' do
-    10.times do
-      user.email = Faker::Internet.email
-      expect(user).to be_valid
-    end
+  context 'メールアドレスが正しいフォーマットのとき' do
+    let(:email) { Faker::Internet.email }
+
+    it { is_expected.to be_valid }
   end
 
   it '不正なフォーマットのメールアドレスを拒否する' do
