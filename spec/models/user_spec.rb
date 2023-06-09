@@ -3,12 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  subject(:user) { described_class.new name:, email:, password:, password_confirmation: }
+  subject(:user) { described_class.new name:, email:, password: }
 
   let(:name) { 'foobar' }
   let(:email) { 'foobar@foo.bar' }
   let(:password) { 'a_little_bit_long_password' }
-  let(:password_confirmation) { password }
 
   it { is_expected.to be_valid }
 
@@ -143,14 +142,6 @@ RSpec.describe User, type: :model do
 
     context '長すぎるとき' do
       let(:password) { 'a' * 129 }
-
-      it { is_expected.to be_invalid }
-    end
-  end
-
-  describe '.password_confirmation' do
-    context 'nilのとき' do
-      let(:password_confirmation) { nil }
 
       it { is_expected.to be_invalid }
     end
