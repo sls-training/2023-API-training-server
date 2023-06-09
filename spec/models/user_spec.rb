@@ -104,10 +104,6 @@ RSpec.describe User, type: :model do
       let(:password) { '' }
 
       it { is_expected.to be_invalid }
-
-      it 'DBへの保存に失敗する' do
-        expect(user.save).to be_falsey
-      end
     end
 
     context 'nilのとき' do
