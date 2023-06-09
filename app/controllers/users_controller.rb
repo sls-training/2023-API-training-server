@@ -8,7 +8,8 @@ class UsersController < ApplicationController
       # TODO: 欠落している全てのパラメータに関するエラーを返す。
       #
       # 欠落パラメータが複数存在していても最初に見つかったもののみのエラーを返す。
-      render problem: { errors: format_parameter_missing_error(e) }, status: :bad_request and return
+      render problem: { errors: ActionController::ParameterMissingDecorator.new(e).to_a },
+             status:  :bad_request and return
     end
 
     if user.save
@@ -27,12 +28,5 @@ class UsersController < ApplicationController
     # ActionController::Parameters クラスのメソッドをチェーンで呼ぶことができない。
     params.require(keys)
     params.permit(keys)
-  end
-
-  # ActionController::ParameterMissing クラスのオブジェクトをエラーレスポンス用の形式に変換する。
-  #
-  # TODO: helper等に移動させる。
-  def format_parameter_missing_error(error)
-    [{ name: error.param, reason: 'is missing or the value is empty' }]
   end
 end
