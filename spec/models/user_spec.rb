@@ -3,73 +3,59 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  subject(:user) do
-    described_class.new name: 'foobar', email: 'foobar@foo.bar', password: 'a_little_bit_long_password',
-                        password_confirmation: 'a_little_bit_long_password'
-  end
+  subject(:user) { described_class.new name:, email:, password:, password_confirmation: }
+
+  let(:name) { 'foobar' }
+  let(:email) { 'foobar@foo.bar' }
+  let(:password) { 'a_little_bit_long_password' }
+  let(:password_confirmation) { password }
 
   it { is_expected.to be_valid }
 
   context '名前がnilのとき' do
-    before do
-      user.name = nil
-    end
+    let(:name) { nil }
 
     it { is_expected.to be_invalid }
   end
 
   context '名前が空文字列のとき' do
-    before do
-      user.name = ''
-    end
+    let(:name) { '' }
 
     it { is_expected.to be_invalid }
   end
 
   context '名前の文字数が最小のとき' do
-    before do
-      user.name = 'a'
-    end
+    let(:name) { 'a' }
 
     it { is_expected.to be_valid }
   end
 
   context '名前の文字数が最長のとき' do
-    before do
-      user.name = 'a' * 64
-    end
+    let(:name) { 'a' * 64 }
 
     it { is_expected.to be_valid }
   end
 
   context '名前が長すぎるとき' do
-    before do
-      user.name = 'a' * 65
-    end
+    let(:name) { 'a' * 65 }
 
     it { is_expected.to be_invalid }
   end
 
   context '名前がスペースのみで構成されているとき' do
-    before do
-      user.name = ' '
-    end
+    let(:name) { ' ' }
 
     it { is_expected.to be_invalid }
   end
 
   context 'メールアドレスがnilのとき' do
-    before do
-      user.email = nil
-    end
+    let(:email) { nil }
 
     it { is_expected.to be_invalid }
   end
 
   context 'メールアドレスが空文字列のとき' do
-    before do
-      user.email = ''
-    end
+    let(:email) { '' }
 
     it { is_expected.to be_invalid }
   end
@@ -112,9 +98,7 @@ RSpec.describe User, type: :model do
   end
 
   context 'パスワードが空文字のとき' do
-    before do
-      user.password = user.password_confirmation = ''
-    end
+    let(:password) { '' }
 
     it { is_expected.to be_invalid }
 
@@ -124,57 +108,43 @@ RSpec.describe User, type: :model do
   end
 
   context 'パスワードがnilのとき' do
-    before do
-      user.password = user.password_confirmation = nil
-    end
+    let(:password) { nil }
 
     it { is_expected.to be_invalid }
   end
 
   context 'パスワードがスペースのみで構成される場合' do
-    before do
-      user.password = user.password_confirmation = ' ' * 16
-    end
+    let(:password) { ' ' * 16 }
 
     it { is_expected.to be_invalid }
   end
 
   context 'パスワードが短すぎるとき' do
-    before do
-      user.password = user.password_confirmation = 'a' * 14
-    end
+    let(:password) { 'a' * 14 }
 
     it { is_expected.to be_invalid }
   end
 
   context 'パスワード長が最短のとき' do
-    before do
-      user.password = user.password_confirmation = 'a' * 15
-    end
+    let(:password) { 'a' * 15 }
 
     it { is_expected.to be_invalid }
   end
 
   context 'パスワードが最長のとき' do
-    before do
-      user.password = user.password_confirmation = 'a' * 128
-    end
+    let(:password) { 'a' * 128 }
 
     it { is_expected.to be_invalid }
   end
 
   context 'パスワードが長すぎるとき' do
-    before do
-      user.password = user.password_confirmation = 'a' * 129
-    end
+    let(:password) { 'a' * 129 }
 
     it { is_expected.to be_invalid }
   end
 
   context 'パスワード確認がnilのとき' do
-    before do
-      user.password_confirmation = nil
-    end
+    let(:password_confirmation) { nil }
 
     it { is_expected.to be_invalid }
   end
