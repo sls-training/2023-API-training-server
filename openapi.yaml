@@ -26,8 +26,8 @@ components:
     userName:
       description: ユーザの表示名である。一意である必要はない。
       type: string
-      minimum: 1
-      maximum: 64
+      minLength: 1
+      maxLength: 64
       examples:
         - 徳川家康
         - George Washington
@@ -42,8 +42,8 @@ components:
       description: 作成するユーザを認証するパスワードである。
       type: string
       format: password
-      minimum: 16
-      maximum: 128
+      minLength: 16
+      maxLength: 128
       examples:
         - abcdefghijklmnop
     fileProperties:
@@ -104,12 +104,12 @@ components:
       type: string
       contentMediaType: application/octet-stream
       contentEncoding: binary
-      minimum: 0
+      minLength: 0
       # 上限を緩和して、代わりにアップロード可能なファイル全体のファイルサイズの総量に制限を設定することも考えられる。
       # ここでは簡単化のためにこの制限は設定しないこととする。
       #
       # 1048576 = 2^10^2 = 1MB
-      maximum: 1048576
+      maxLength: 1048576
     error:
       type: object
       properties:
