@@ -549,9 +549,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/fileProperties'
+                type: object
+                properties:
+                  files:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/fileProperties'
+                required:
+                  - files
               examples:
                 files:
                   summary: サンプルファイル群
