@@ -82,7 +82,8 @@ RSpec.describe User, type: :model do
 
     context '同じメールアドレスのユーザが存在する場合' do
       before do
-        user.dup.save!
+        described_class.create! name: Faker::Name.name, email:,
+                                password: Faker::Internet.password(min_length: 16)
       end
 
       it { is_expected.to be_invalid }
@@ -90,9 +91,8 @@ RSpec.describe User, type: :model do
 
     context '大文字小文字違いのメールアドレスを持つユーザが存在する場合' do
       before do
-        another_user = user.dup
-        another_user.email = user.email.upcase
-        another_user.save!
+        described_class.create! name: Faker::Name.name, email: email.upcase,
+                                password: Faker::Internet.password(min_length: 16)
       end
 
       it { is_expected.to be_invalid }
