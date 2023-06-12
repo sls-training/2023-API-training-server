@@ -9,7 +9,9 @@ RSpec.describe User, type: :model do
   let(:email) { 'foobar@foo.bar' }
   let(:password) { 'a_little_bit_long_password' }
 
-  it { is_expected.to be_valid }
+  context '値が全て適切であるとき' do
+    it { is_expected.to be_valid }
+  end
 
   describe '.name' do
     context 'nilのとき' do
