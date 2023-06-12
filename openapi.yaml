@@ -29,23 +29,15 @@ components:
       minimum: 1
       maximum: 64
       examples:
-        ieyasu:
-          summary: 日本語名
-          value: 徳川家康
-        washington:
-          summary: 英語名
-          value: George Washington
-        anthony:
-          summary: ハンドルネーム
-          value: ad
+        - 徳川家康
+        - George Washington
+        - ad
     userEmail:
       description: ユーザを識別するメールアドレスである。一意である必要がある。
       type: string
       format: email
       examples:
-        gmail:
-          summary: Gmailのメールアドレスの例
-          value: foo.bar@gmail.com
+        - foo.bar@gmail.com
     userPassword:
       description: 作成するユーザを認証するパスワードである。
       type: string
@@ -53,9 +45,7 @@ components:
       minimum: 16
       maximum: 128
       examples:
-        naive_password:
-          summary: 単純なパスワード
-          value: abcdefghijklmnop
+        - abcdefghijklmnop
     fileProperties:
       type: object
       properties:
@@ -237,15 +227,15 @@ components:
               - status
               - title
               - error
-            examples:
-              missing_required_parameters:
-                summary: 必須パラメータが不足している。
-                value:
-                  {
-                    "status": 400,
-                    "title": "Bad Request",
-                    "error": "invalid_request"
-                  }
+          examples:
+            missing_required_parameters:
+              summary: 必須パラメータが不足している。
+              value:
+                {
+                  "status": 400,
+                  "title": "Bad Request",
+                  "error": "invalid_request"
+                }
     bearerUnauthorized:
       description: |
         アクセストークンがない、あるいは失効や有効期限切れなどによる有効でないアクセストークンによるアクセスを意味する。
