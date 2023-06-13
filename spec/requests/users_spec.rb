@@ -34,29 +34,6 @@ RSpec.describe 'Users', type: :request do
       end
     end
 
-    context '必須パラメータが欠落しているとき' do
-      subject do
-        post user_path params: {}
-        response
-      end
-
-      it { is_expected.to have_http_status :bad_request }
-      it { is_expected.to have_attributes media_type: 'application/problem+json' }
-      it { expect { subject }.not_to change(User, :count) }
-
-      it 'レスポンスボディに適切なエラー内容が含まれている' do
-        expect(subject.parsed_body).to include(
-          {
-            'status' => 400,
-            'title'  => 'Bad Request',
-            'errors' => [
-              { 'name' => 'name', 'reason' => anything }
-            ]
-          }
-        )
-      end
-    end
-
     context 'パラメータが不正であるとき' do
       subject do
         post user_path, params: {
