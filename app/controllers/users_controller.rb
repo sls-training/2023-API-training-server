@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     if user.save
       render json: UserResource.new(user), status: :created
     else
-      render problem: { errors: ActiveModel::ErrorsDecorator.new(user.errors).to_a }, status: :unprocessable_entity
+      render problem: ProblemDetails::UserResource.new(user).to_h, status: :unprocessable_entity
     end
   end
 
