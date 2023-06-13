@@ -7,7 +7,7 @@ module ActiveModel
     end
 
     def to_a
-      @errors.messages.each.map do |name, reasons|
+      @errors.messages.map do |name, reasons|
         reasons.map { |reason| { name:, reason: } }
       end.flatten
     end
