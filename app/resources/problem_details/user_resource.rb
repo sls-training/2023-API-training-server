@@ -5,5 +5,9 @@ module ProblemDetails
     include Alba::Resource
 
     many :errors, resource: ProblemDetails::ActiveModel::ErrorsResource
+
+    def to_hash
+      to_h
+    end
   end
 end
