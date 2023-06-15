@@ -8,7 +8,7 @@ RSpec.describe AccessToken, type: :model do
   # パディングを除いてトークン文字列として有効な文字を全て含んだ文字列
   let(:token) { "#{(('a'..'z').to_a + ('A'..'Z').to_a + (1..9).to_a).join}-._~+/" }
   let(:scope) { 'READ WRITE' }
-  let(:expires_in) { 60 * 60 }
+  let(:expires_in) { 1.hour }
   let(:revoked_at) { nil }
   let(:user) { FactoryBot.create :user }
 

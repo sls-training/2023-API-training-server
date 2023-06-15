@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :access_token do
     token { SecureRandom.base64 }
     scope { 'READ WRITE' }
-    expires_in { 60 * 60 }
+    expires_in { 1.hour }
     association :user
   end
 end
