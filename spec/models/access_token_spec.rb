@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe AccessToken, type: :model do
   subject { described_class.new token:, scope:, expires_in:, revoked_at:, user: }
 
-  let(:token) { SecureRandom.base64 }
+  # パディングを除いてトークン文字列として有効な文字を全て含んだ文字列
+  let(:token) { "#{(('a'..'z').to_a + ('A'..'Z').to_a + (1..9).to_a).join}-._~+/" }
   let(:scope) { 'READ WRITE' }
   let(:expires_in) { 60 * 60 }
   let(:revoked_at) { nil }
