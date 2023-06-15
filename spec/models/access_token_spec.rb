@@ -141,14 +141,12 @@ RSpec.describe AccessToken, type: :model do
 
     context '失効日時が過去のとき' do
       before do
-        subject.save!
-      end
-
-      it 'trueを返す' do
-        travel_to Date.current.tomorrow do
-          expect(subject).to be_expires
+        travel_to Date.current.yesterday do
+          subject.save!
         end
       end
+
+      it { is_expected.to be_expires }
     end
   end
 
