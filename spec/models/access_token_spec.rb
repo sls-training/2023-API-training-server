@@ -130,7 +130,7 @@ RSpec.describe AccessToken, type: :model do
     end
   end
 
-  describe '#expires?' do
+  describe '#expired?' do
     context '失効日時が未来のとき' do
       before do
         subject.save!
