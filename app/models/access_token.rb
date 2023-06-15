@@ -17,7 +17,7 @@ class AccessToken < ApplicationRecord
   end
 
   def revoked?
-    !revoked_at.nil?
+    revoked_at.present?
   end
 
   def revoke
