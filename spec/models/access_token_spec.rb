@@ -153,19 +153,19 @@ RSpec.describe AccessToken, type: :model do
   end
 
   describe '#revoked?' do
-    context '失効されていたら' do
+    context '無効化されていたら' do
       let(:revoked_at) { Time.current }
 
       it { is_expected.to be_revoked }
     end
 
-    context '失効されていなかったら' do
+    context '無効化されていなかったら' do
       it { is_expected.not_to be_revoked }
     end
   end
 
   describe '#revoke' do
-    context '失効されていたら' do
+    context '無効化されていたら' do
       let(:revoked_at) { Time.current }
 
       it 'revoked_atを更新しない' do
@@ -176,12 +176,12 @@ RSpec.describe AccessToken, type: :model do
       end
     end
 
-    context '失効されていなかったら' do
+    context '無効化されていなかったら' do
       before do
         subject.revoke
       end
 
-      it 'revoked_atに失効日時を設定する' do
+      it 'revoked_atに無効化日時を設定する' do
         expect(subject.revoked_at).not_to be_nil
       end
     end
