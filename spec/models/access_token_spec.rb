@@ -166,13 +166,12 @@ RSpec.describe AccessToken, type: :model do
 
   describe '#revoke' do
     context '無効化されていたら' do
-      let(:revoked_at) { Time.current }
+      before do
+        subject.revoke
+      end
 
       it 'revoked_atを更新しない' do
-        travel_to Time.current.tomorrow do
-          subject.revoke
-          expect(subject.revoked_at).to eq revoked_at
-        end
+        expect { subject.revoke }.not_to change(subject, :revoked_at)
       end
     end
 
