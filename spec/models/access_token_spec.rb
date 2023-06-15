@@ -40,6 +40,18 @@ RSpec.describe AccessToken, type: :model do
       it { is_expected.to be_invalid }
     end
 
+    context 'パディング以外の文字列が短すぎるとき' do
+      let(:token) { "#{'a' * 15}=" }
+
+      it { is_expected.to be_invalid }
+    end
+
+    context '許可されていない文字を含んでいるとき' do
+      let(:token) { "#{'a' * 15}@" }
+
+      it { is_expected.to be_invalid }
+    end
+
     context '重複しているとき' do
       before do
         FactoryBot.create :access_token, token:
