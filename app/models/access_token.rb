@@ -12,7 +12,7 @@ class AccessToken < ApplicationRecord
   validates :scope, format: { with: /\A(READ|WRITE)( (READ|WRITE)*)\Z/ }
   validates :expires_in, numericality: { greater_than_or_equal_to: 0 }
 
-  def expires?
+  def expired?
     created_at + expires_in < Time.current
   end
 

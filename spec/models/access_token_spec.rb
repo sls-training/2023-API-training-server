@@ -136,7 +136,7 @@ RSpec.describe AccessToken, type: :model do
         subject.save!
       end
 
-      it { is_expected.not_to be_expires }
+      it { is_expected.not_to be_expired }
     end
 
     context '失効日時が過去のとき' do
@@ -146,7 +146,7 @@ RSpec.describe AccessToken, type: :model do
         end
       end
 
-      it { is_expected.to be_expires }
+      it { is_expected.to be_expired }
     end
   end
 
