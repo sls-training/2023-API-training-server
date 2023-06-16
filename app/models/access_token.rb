@@ -12,6 +12,19 @@ class AccessToken < ApplicationRecord
   validates :scope, format: { with: /\A(READ|WRITE)( (READ|WRITE)*)\Z/ }
   validates :expires_in, numericality: { greater_than_or_equal_to: 0 }
 
+  # 新規レコードの場合かつ属性が引数で明示的に設定されていない場合はデフォルト値を設定する。
+  def initialize(attributes = nil)
+    super attributes
+
+    return unless new_record? && attributes.is_a?(Hash)
+
+    set_default = ->(name, default) { self[name] ||= default unless attributes.key? name }
+
+    set_default.call :token, SecureRandom.base64
+    set_default.call :scope, 'READ WRITE'
+    set_default.call :expires_in, 1.hour
+  end
+
   def expired?
     created_at + expires_in < Time.current
   end

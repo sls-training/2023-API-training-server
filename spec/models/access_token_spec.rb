@@ -16,6 +16,12 @@ RSpec.describe AccessToken, type: :model do
     it { is_expected.to be_valid }
   end
 
+  context '関連付け以外の引数がない場合' do
+    subject { described_class.new user: }
+
+    it { is_expected.to be_valid }
+  end
+
   describe '.token' do
     context 'nilのとき' do
       let(:token) { nil }

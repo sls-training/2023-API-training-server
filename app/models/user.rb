@@ -10,10 +10,4 @@ class User < ApplicationRecord
 
   has_secure_password validations: false
   validates :password, presence: true, length: { minimum: 16, maximum: 128 }
-
-  def new_access_token(token: SecureRandom.base64, scope: 'READ WRITE', expires_in: 1.hour)
-    access_token = AccessToken.new(token:, scope:, expires_in:)
-    access_tokens << access_token
-    access_token
-  end
 end
