@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_14_034521) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_16_071056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "access_tokens", force: :cascade do |t|
-    t.string "token"
-    t.string "scope"
-    t.integer "expires_in"
+    t.string "token", null: false
+    t.string "scope", null: false
+    t.integer "expires_in", null: false
     t.datetime "revoked_at"
     t.uuid "user_id", null: false
     t.datetime "created_at", null: false
