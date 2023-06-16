@@ -9,7 +9,7 @@ class AccessToken < ApplicationRecord
   # 上記では、トークンの文字列長は1以上であればよいことになっているが、短すぎると総当たりで突破されないとも
   # 限らないので 保険として、 `=` によるパディング以外の部分に関して、ある程度の長さを要求する。
   validates :token, format: { with: %r{\A[\w\-.~+/]{16,}=*\Z} }, uniqueness: true
-  validates :scope, format: { with: /\A(READ|WRITE)( (READ|WRITE)*)\Z/ }
+  validates :scope, format: { with: /\A(READ|WRITE)( (READ|WRITE))*\Z/ }
   validates :expires_in, numericality: { greater_than_or_equal_to: 0 }
 
   # 新規レコードの場合かつ属性が引数で明示的に設定されていない場合はデフォルト値を設定する。

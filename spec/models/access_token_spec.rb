@@ -98,6 +98,12 @@ RSpec.describe AccessToken, type: :model do
 
       it { is_expected.to be_invalid }
     end
+
+    context 'スペース区切りになっていないとき' do
+      let(:scope) { 'READ READWRITE' }
+
+      it { is_expected.to be_invalid }
+    end
   end
 
   describe '.expires_in' do
