@@ -81,7 +81,7 @@ RSpec.describe AccessToken, type: :model do
         it { is_expected.to be_truthy }
       end
 
-      context '適当な値のとき' do
+      context '不正な値のとき' do
         let(:scope) { Faker::Lorem.characters }
 
         it { is_expected.to be_falsey }
