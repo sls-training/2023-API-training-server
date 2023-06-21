@@ -8,7 +8,7 @@ RSpec.describe AccessToken, type: :model do
   let(:user) { FactoryBot.create :user }
 
   describe '.new' do
-    context 'ユーザを指定するとき' do
+    context 'ユーザのみを指定するとき' do
       subject { described_class.new user: }
 
       it { is_expected.to be_valid }
@@ -17,7 +17,7 @@ RSpec.describe AccessToken, type: :model do
       it { is_expected.not_to be_revoked }
     end
 
-    context 'ユーザを指定しないとき' do
+    context '引数なしのとき' do
       subject { described_class.new }
 
       it { is_expected.to be_invalid }
