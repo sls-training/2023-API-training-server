@@ -156,6 +156,8 @@ RSpec.describe AccessToken, type: :model do
   end
 
   describe '#revoke' do
+    subject { described_class.new user: }
+
     context '無効化されていたら' do
       before do
         subject.revoke
