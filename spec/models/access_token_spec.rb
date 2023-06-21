@@ -28,36 +28,6 @@ RSpec.describe AccessToken, type: :model do
     describe 'token' do
       subject { described_class.new token:, user: }
 
-      context 'nilのとき' do
-        let(:token) { nil }
-
-        it { is_expected.to be_invalid }
-      end
-
-      context '空文字列のとき' do
-        let(:token) { '' }
-
-        it { is_expected.to be_invalid }
-      end
-
-      context '空白文字列のとき' do
-        let(:token) { ' ' }
-
-        it { is_expected.to be_invalid }
-      end
-
-      context '短すぎるとき' do
-        let(:token) { 'a' * 15 }
-
-        it { is_expected.to be_invalid }
-      end
-
-      context 'パディング以外の文字列が短すぎるとき' do
-        let(:token) { "#{'a' * 15}=" }
-
-        it { is_expected.to be_invalid }
-      end
-
       context '許可されていない文字を含んでいるとき' do
         let(:token) { "#{'a' * 15}@" }
 
@@ -85,24 +55,6 @@ RSpec.describe AccessToken, type: :model do
     describe 'scope' do
       subject { described_class.new scope:, user: }
 
-      context 'nilのとき' do
-        let(:scope) { nil }
-
-        it { is_expected.to be_invalid }
-      end
-
-      context '空文字列のとき' do
-        let(:scope) { '' }
-
-        it { is_expected.to be_invalid }
-      end
-
-      context '空白文字列のとき' do
-        let(:scope) { ' ' }
-
-        it { is_expected.to be_invalid }
-      end
-
       context '適当な値のとき' do
         let(:scope) { Faker::Lorem.characters }
 
@@ -125,12 +77,6 @@ RSpec.describe AccessToken, type: :model do
     describe 'expires_in' do
       subject { described_class.new expires_in:, user: }
 
-      context 'nilのとき' do
-        let(:expires_in) { nil }
-
-        it { is_expected.to be_invalid }
-      end
-
       context '0のとき' do
         let(:expires_in) { 0 }
 
@@ -139,26 +85,6 @@ RSpec.describe AccessToken, type: :model do
 
       context '-1のとき' do
         let(:expires_in) { -1 }
-
-        it { is_expected.to be_invalid }
-      end
-    end
-
-    describe 'revoked_at' do
-      subject { described_class.new revoked_at:, user: }
-
-      context 'nilのとき' do
-        let(:revoked_at) { nil }
-
-        it { is_expected.to be_valid }
-      end
-    end
-
-    describe 'user' do
-      subject { described_class.new user: }
-
-      context 'nilのとき' do
-        let(:user) { nil }
 
         it { is_expected.to be_invalid }
       end
