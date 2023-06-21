@@ -75,6 +75,12 @@ RSpec.describe AccessToken, type: :model do
         it { is_expected.to be_truthy }
       end
 
+      context '値が整列されていないとき' do
+        let(:scope) { 'WRITE READ' }
+
+        it { is_expected.to be_truthy }
+      end
+
       context '不正な値のとき' do
         let(:scope) { Faker::Lorem.characters }
 
