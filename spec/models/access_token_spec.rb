@@ -28,7 +28,7 @@ RSpec.describe AccessToken, type: :model do
     describe 'token' do
       subject { described_class.new token:, user: }
 
-      context '許可されていない文字を含んでいるとき' do
+      context 'Bearerトークンとして無効な文字列の場合' do
         let(:token) { "#{'a' * 15}@" }
 
         it { is_expected.to be_invalid }
