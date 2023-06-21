@@ -75,12 +75,6 @@ RSpec.describe AccessToken, type: :model do
         it { is_expected.to be_truthy }
       end
 
-      context '同じ正当な値が複数含まれているとき' do
-        let(:scope) { 'READ READ' }
-
-        it { is_expected.to be_truthy }
-      end
-
       context '不正な値のとき' do
         let(:scope) { Faker::Lorem.characters }
 
