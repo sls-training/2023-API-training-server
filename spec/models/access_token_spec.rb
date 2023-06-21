@@ -105,13 +105,13 @@ RSpec.describe AccessToken, type: :model do
 
       let(:access_token) { described_class.new expires_in:, user: }
 
-      context '0のとき' do
+      context '0以上の値のとき' do
         let(:expires_in) { 0 }
 
         it { is_expected.to be_truthy }
       end
 
-      context '-1のとき' do
+      context '0未満の値のとき' do
         let(:expires_in) { -1 }
 
         it { is_expected.to be_falsey }
