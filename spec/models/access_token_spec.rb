@@ -34,6 +34,13 @@ RSpec.describe AccessToken, type: :model do
         it { is_expected.to be_invalid }
       end
 
+      context 'Bearerトークンとして有効な文字列の場合' do
+        # パディングを除いてトークン文字列として有効な文字を全て含んだ文字列
+        let(:token) { "#{(('a'..'z').to_a + ('A'..'Z').to_a + (1..9).to_a).join}-._~+/" }
+
+        it { is_expected.to be_valid }
+      end
+
       context '重複しているとき' do
         let(:token) { 'a' * 16 }
 
@@ -42,13 +49,6 @@ RSpec.describe AccessToken, type: :model do
         end
 
         it { is_expected.to be_invalid }
-      end
-
-      context 'Bearerトークンとして有効な文字列の場合' do
-        # パディングを除いてトークン文字列として有効な文字を全て含んだ文字列
-        let(:token) { "#{(('a'..'z').to_a + ('A'..'Z').to_a + (1..9).to_a).join}-._~+/" }
-
-        it { is_expected.to be_valid }
       end
     end
 
