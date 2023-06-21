@@ -16,7 +16,7 @@ class AccessToken < ApplicationRecord
   def initialize(attributes = nil)
     super attributes
 
-    return unless new_record? && attributes.is_a?(Hash)
+    return unless attributes.is_a?(Hash)
 
     set_default = ->(name, default) { self[name] ||= default unless attributes.key? name }
 
