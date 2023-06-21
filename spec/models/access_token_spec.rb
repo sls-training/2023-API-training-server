@@ -133,6 +133,10 @@ RSpec.describe AccessToken, type: :model do
 
       it { is_expected.to be_expired }
     end
+
+    context '永続化されていないとき' do
+      it { expect { subject.expired? }.to raise_error RuntimeError }
+    end
   end
 
   describe '#revoked?' do

@@ -26,6 +26,8 @@ class AccessToken < ApplicationRecord
   end
 
   def expired?
+    raise 'Save this object before call #expired?' if new_record?
+
     created_at + expires_in < Time.current
   end
 
