@@ -3,142 +3,148 @@
 require 'rails_helper'
 
 RSpec.describe AccessToken, type: :model do
-  subject { described_class.new token:, scope:, expires_in:, revoked_at:, user: }
+  subject { described_class.new user: }
 
-  # パディングを除いてトークン文字列として有効な文字を全て含んだ文字列
-  let(:token) { "#{(('a'..'z').to_a + ('A'..'Z').to_a + (1..9).to_a).join}-._~+/" }
-  let(:scope) { 'READ WRITE' }
-  let(:expires_in) { 1.hour }
-  let(:revoked_at) { nil }
   let(:user) { FactoryBot.create :user }
 
-  context '値が全て適切であるとき' do
-    it { is_expected.to be_valid }
+  describe '.new' do
+    context 'ユーザを指定するとき' do
+      subject { described_class.new user: }
+
+      it { is_expected.to be_valid }
+    end
   end
 
-  context '関連付け以外の引数がない場合' do
-    subject { described_class.new user: }
+  describe '#valid?' do
+    subject { described_class.new token:, scope:, expires_in:, user: }
 
-    it { is_expected.to be_valid }
-  end
+    # パディングを除いてトークン文字列として有効な文字を全て含んだ文字列
+    let(:token) { "#{(('a'..'z').to_a + ('A'..'Z').to_a + (1..9).to_a).join}-._~+/" }
+    let(:scope) { 'READ WRITE' }
+    let(:expires_in) { 1.hour }
 
-  describe '.token' do
-    context 'nilのとき' do
-      let(:token) { nil }
-
-      it { is_expected.to be_invalid }
+    context '値が全て適切であるとき' do
+      it { is_expected.to be_valid }
     end
 
-    context '空文字列のとき' do
-      let(:token) { '' }
+    describe 'token' do
+      context 'nilのとき' do
+        let(:token) { nil }
 
-      it { is_expected.to be_invalid }
-    end
-
-    context '空白文字列のとき' do
-      let(:token) { ' ' }
-
-      it { is_expected.to be_invalid }
-    end
-
-    context '短すぎるとき' do
-      let(:token) { 'a' * 15 }
-
-      it { is_expected.to be_invalid }
-    end
-
-    context 'パディング以外の文字列が短すぎるとき' do
-      let(:token) { "#{'a' * 15}=" }
-
-      it { is_expected.to be_invalid }
-    end
-
-    context '許可されていない文字を含んでいるとき' do
-      let(:token) { "#{'a' * 15}@" }
-
-      it { is_expected.to be_invalid }
-    end
-
-    context '重複しているとき' do
-      before do
-        FactoryBot.create :access_token, token:
+        it { is_expected.to be_invalid }
       end
 
-      it { is_expected.to be_invalid }
-    end
-  end
+      context '空文字列のとき' do
+        let(:token) { '' }
 
-  describe '.scope' do
-    context 'nilのとき' do
-      let(:scope) { nil }
+        it { is_expected.to be_invalid }
+      end
 
-      it { is_expected.to be_invalid }
-    end
+      context '空白文字列のとき' do
+        let(:token) { ' ' }
 
-    context '空文字列のとき' do
-      let(:scope) { '' }
+        it { is_expected.to be_invalid }
+      end
 
-      it { is_expected.to be_invalid }
-    end
+      context '短すぎるとき' do
+        let(:token) { 'a' * 15 }
 
-    context '空白文字列のとき' do
-      let(:scope) { ' ' }
+        it { is_expected.to be_invalid }
+      end
 
-      it { is_expected.to be_invalid }
-    end
+      context 'パディング以外の文字列が短すぎるとき' do
+        let(:token) { "#{'a' * 15}=" }
 
-    context '適当な値のとき' do
-      let(:scope) { Faker::Lorem.characters }
+        it { is_expected.to be_invalid }
+      end
 
-      it { is_expected.to be_invalid }
-    end
+      context '許可されていない文字を含んでいるとき' do
+        let(:token) { "#{'a' * 15}@" }
 
-    context '一部に正規のスコープの値を含んでいるとき' do
-      let(:scope) { 'REWRITE' }
+        it { is_expected.to be_invalid }
+      end
 
-      it { is_expected.to be_invalid }
-    end
+      context '重複しているとき' do
+        before do
+          FactoryBot.create :access_token, token:
+        end
 
-    context 'スペース区切りになっていないとき' do
-      let(:scope) { 'READ READWRITE' }
-
-      it { is_expected.to be_invalid }
-    end
-  end
-
-  describe '.expires_in' do
-    context 'nilのとき' do
-      let(:expires_in) { nil }
-
-      it { is_expected.to be_invalid }
+        it { is_expected.to be_invalid }
+      end
     end
 
-    context '0のとき' do
-      let(:expires_in) { 0 }
+    describe 'scope' do
+      context 'nilのとき' do
+        let(:scope) { nil }
 
-      it { is_expected.to be_valid }
+        it { is_expected.to be_invalid }
+      end
+
+      context '空文字列のとき' do
+        let(:scope) { '' }
+
+        it { is_expected.to be_invalid }
+      end
+
+      context '空白文字列のとき' do
+        let(:scope) { ' ' }
+
+        it { is_expected.to be_invalid }
+      end
+
+      context '適当な値のとき' do
+        let(:scope) { Faker::Lorem.characters }
+
+        it { is_expected.to be_invalid }
+      end
+
+      context '一部に正規のスコープの値を含んでいるとき' do
+        let(:scope) { 'REWRITE' }
+
+        it { is_expected.to be_invalid }
+      end
+
+      context 'スペース区切りになっていないとき' do
+        let(:scope) { 'READ READWRITE' }
+
+        it { is_expected.to be_invalid }
+      end
     end
 
-    context '-1のとき' do
-      let(:expires_in) { -1 }
+    describe 'expires_in' do
+      context 'nilのとき' do
+        let(:expires_in) { nil }
 
-      it { is_expected.to be_invalid }
+        it { is_expected.to be_invalid }
+      end
+
+      context '0のとき' do
+        let(:expires_in) { 0 }
+
+        it { is_expected.to be_valid }
+      end
+
+      context '-1のとき' do
+        let(:expires_in) { -1 }
+
+        it { is_expected.to be_invalid }
+      end
     end
-  end
 
-  describe '.revoked_at' do
-    context 'nilのとき' do
-      let(:revoked_at) { nil }
+    describe 'revoked_at' do
+      context 'nilのとき' do
+        let(:revoked_at) { nil }
 
-      it { is_expected.to be_valid }
+        it { is_expected.to be_valid }
+      end
     end
-  end
 
-  describe '.user' do
-    context 'nilのとき' do
-      let(:user) { nil }
+    describe 'user' do
+      context 'nilのとき' do
+        let(:user) { nil }
 
-      it { is_expected.to be_invalid }
+        it { is_expected.to be_invalid }
+      end
     end
   end
 
@@ -163,6 +169,8 @@ RSpec.describe AccessToken, type: :model do
   end
 
   describe '#revoked?' do
+    subject { described_class.new revoked_at:, user: }
+
     context '無効化されていたら' do
       let(:revoked_at) { Time.current }
 
@@ -170,6 +178,8 @@ RSpec.describe AccessToken, type: :model do
     end
 
     context '無効化されていなかったら' do
+      let(:revoked_at) { nil }
+
       it { is_expected.not_to be_revoked }
     end
   end
