@@ -16,18 +16,9 @@ RSpec.describe AccessToken, type: :model do
   end
 
   describe '#valid?' do
-    subject { described_class.new token:, scope:, expires_in:, user: }
-
-    # パディングを除いてトークン文字列として有効な文字を全て含んだ文字列
-    let(:token) { "#{(('a'..'z').to_a + ('A'..'Z').to_a + (1..9).to_a).join}-._~+/" }
-    let(:scope) { 'READ WRITE' }
-    let(:expires_in) { 1.hour }
-
-    context '値が全て適切であるとき' do
-      it { is_expected.to be_valid }
-    end
-
     describe 'token' do
+      subject { described_class.new token:, user: }
+
       context 'nilのとき' do
         let(:token) { nil }
 
@@ -65,15 +56,26 @@ RSpec.describe AccessToken, type: :model do
       end
 
       context '重複しているとき' do
+        let(:token) { 'a' * 16 }
+
         before do
           FactoryBot.create :access_token, token:
         end
 
         it { is_expected.to be_invalid }
       end
+
+      context 'Bearerトークンとして有効な文字列の場合' do
+        # パディングを除いてトークン文字列として有効な文字を全て含んだ文字列
+        let(:token) { "#{(('a'..'z').to_a + ('A'..'Z').to_a + (1..9).to_a).join}-._~+/" }
+
+        it { is_expected.to be_valid }
+      end
     end
 
     describe 'scope' do
+      subject { described_class.new scope:, user: }
+
       context 'nilのとき' do
         let(:scope) { nil }
 
@@ -112,6 +114,8 @@ RSpec.describe AccessToken, type: :model do
     end
 
     describe 'expires_in' do
+      subject { described_class.new expires_in:, user: }
+
       context 'nilのとき' do
         let(:expires_in) { nil }
 
@@ -132,6 +136,8 @@ RSpec.describe AccessToken, type: :model do
     end
 
     describe 'revoked_at' do
+      subject { described_class.new revoked_at:, user: }
+
       context 'nilのとき' do
         let(:revoked_at) { nil }
 
@@ -140,6 +146,8 @@ RSpec.describe AccessToken, type: :model do
     end
 
     describe 'user' do
+      subject { described_class.new user: }
+
       context 'nilのとき' do
         let(:user) { nil }
 
