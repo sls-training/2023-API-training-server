@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe AccessToken, type: :model do
-  subject { described_class.new user: }
-
   let(:user) { FactoryBot.create :user }
 
   describe '.new' do
@@ -116,6 +114,8 @@ RSpec.describe AccessToken, type: :model do
   end
 
   describe '#expired?' do
+    subject { described_class.new user: }
+
     context '失効日時が未来のとき' do
       before do
         subject.save!
