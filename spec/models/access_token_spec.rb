@@ -55,6 +55,30 @@ RSpec.describe AccessToken, type: :model do
     describe 'scope' do
       subject { described_class.new scope:, user: }
 
+      context 'READのとき' do
+        let(:scope) { 'READ' }
+
+        it { is_expected.to be_valid }
+      end
+
+      context 'WRITEのとき' do
+        let(:scope) { 'WRITE' }
+
+        it { is_expected.to be_valid }
+      end
+
+      context '正当な値がスペース区切りで連結しているとき' do
+        let(:scope) { 'READ WRITE' }
+
+        it { is_expected.to be_valid }
+      end
+
+      context '同じ正当な値が複数含まれているとき' do
+        let(:scope) { 'READ READ' }
+
+        it { is_expected.to be_valid }
+      end
+
       context '適当な値のとき' do
         let(:scope) { Faker::Lorem.characters }
 
