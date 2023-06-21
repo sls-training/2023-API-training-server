@@ -170,11 +170,11 @@ RSpec.describe AccessToken, type: :model do
 
     context '無効化されていなかったら' do
       before do
-        subject.revoke
+        travel_to Time.current
       end
 
       it 'revoked_atに無効化日時を設定する' do
-        expect(subject.revoked_at).not_to be_nil
+        expect{ subject.revoke }.to change(subject, :revoked_at).from(nil).to(Time.current)
       end
     end
   end
