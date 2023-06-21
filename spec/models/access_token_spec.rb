@@ -12,6 +12,9 @@ RSpec.describe AccessToken, type: :model do
       subject { described_class.new user: }
 
       it { is_expected.to be_valid }
+      it { is_expected.to have_attributes scope: 'READ WRITE' }
+      it { is_expected.to have_attributes expires_in: 1.hour }
+      it { is_expected.not_to be_revoked }
     end
 
     context 'ユーザを指定しないとき' do
