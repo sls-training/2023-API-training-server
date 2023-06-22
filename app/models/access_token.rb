@@ -12,7 +12,9 @@ class AccessToken < ApplicationRecord
   validates :scope, format: { with: /\A(READ|WRITE)( (READ|WRITE))*\Z/ }
   validates :expires_in, numericality: { greater_than_or_equal_to: 0 }
 
-  defaults token: -> { SecureRandom.base64 }, scope: 'READ WRITE', expires_in: 1.hour
+  attribute :token, default: -> { SecureRandom.base64 }
+  attribute :scope, default: 'READ WRITE'
+  attribute :expires_in, default: 1.hour
 
   def expired?
     raise 'Save this object before call #expired?' if new_record?

@@ -10,7 +10,6 @@ gem 'rails', '~> 7.0.5'
 gem 'alba', '~> 2.3'
 gem 'bcrypt', '~> 3.1.18'
 gem 'bootsnap', require: false
-gem 'defaults', '~> 2.0'
 gem 'pg', '~> 1.1'
 gem 'problem_details-rails', '~> 0.2.3'
 gem 'puma', '~> 6.3'
