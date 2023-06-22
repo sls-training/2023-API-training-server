@@ -20,6 +20,30 @@ AllCops:
     - public/**/*
     - storage/**/*
 
+Metrics/AbcSize:
+  Max: 21
+  Include:
+    - app/controllers/**/*
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+  Include:
+    - app/controllers/**/*
+
+Metrics/MethodLength:
+  Max: 11
+  CountAsOne:
+    - array
+    - hash
+    - heredoc
+  Include:
+    - app/controllers/**/*
+
+Metrics/PerceivedComplexity:
+  Max: 10
+  Include:
+    - app/controllers/**/*
+
 RSpec/ExampleLength:
   CountAsOne:
     - array
