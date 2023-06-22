@@ -125,7 +125,7 @@ components:
               name:
                 type: string
                 description: エラーが発生した対象の名前が格納される。
-              message:
+              reason:
                 type: string
                 description: 発生したエラーの詳細が格納される。
             required:
