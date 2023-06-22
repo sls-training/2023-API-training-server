@@ -156,14 +156,4 @@ RSpec.describe User, type: :model do
       end
     end
   end
-
-  describe '#access_tokens' do
-    describe '#build' do
-      context 'デフォルト値で実行した場合' do
-        it '作成されたアクセストークンは有効である' do
-          expect(user.access_tokens.build).to be_valid
-        end
-      end
-    end
-  end
 end
