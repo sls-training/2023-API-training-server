@@ -25,3 +25,8 @@ RSpec/ExampleLength:
     - array
     - hash
     - heredoc
+
+RSpec/NestedGroups:
+  Max: 4
+  Include:
+    - spec/models/*

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  has_many :access_tokens, dependent: :destroy
+
   validates :name, presence: true, length: { minimum: 1, maximum: 64 }
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true

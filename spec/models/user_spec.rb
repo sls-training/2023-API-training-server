@@ -146,4 +146,14 @@ RSpec.describe User, type: :model do
       it { is_expected.to be_invalid }
     end
   end
+
+  describe '.access_tokens' do
+    context 'ユーザを削除したとき' do
+      let!(:user) { FactoryBot.create :user, :with_access_tokens }
+
+      it '発行されたアクセストークンも削除する' do
+        expect { user.destroy! }.to change(AccessToken, :count).by(-1)
+      end
+    end
+  end
 end
