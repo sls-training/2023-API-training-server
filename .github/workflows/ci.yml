@@ -76,22 +76,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20.2.0
+          cache: npm
 
-      - uses: actions/cache@v3
-        id: cache-node-modules
-        with:
-          path: ~/.node_modules
-          key: openapi-validator
-
-      - name: Install OpenAPI Validator
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm install -g ibm-openapi-validator@1.1.1
-
-      - name: Add a path for OpenAPI Validator
-        run: echo ~/.node_modules/bin >> "$GITHUB_PATH"
+      - name: Install dev dependencies
+        run: npm ci
 
       - name: Run OpenAPI Validator
-        run: lint-openapi openapi.yaml
+        run: npm exec -- lint-openapi openapi.yaml
 
   actionlint:
     runs-on: ubuntu-latest
