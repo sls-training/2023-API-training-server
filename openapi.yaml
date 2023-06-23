@@ -561,23 +561,25 @@ paths:
                 files:
                   summary: サンプルファイル群
                   value:
-                    [
-                      {
-                        "id": "76DA18B4-7CF0-48C1-A33D-2FFA0A4B345A",
-                        "name": "sample01.txt",
-                        "description": "My diary",
-                        "size": 1024,
-                        "created_at": "2020-10-12T11:20:44+00:00",
-                        "changed_at": "2023-05-25T23:07:39+00:00"
-                      },
-                      {
-                        "id": "9BD3BEA3-67E7-401A-9A45-C6CAB38A052A",
-                        "name": "sample02.png",
-                        "size": 1048576,
-                        "created_at": "2020-10-12T11:10:30+00:00",
-                        "changed_at": "2020-10-12T11:10:30+00:00"
-                      }
-                    ]
+                    {
+                      "files": [
+                        {
+                          "id": "76DA18B4-7CF0-48C1-A33D-2FFA0A4B345A",
+                          "name": "sample01.txt",
+                          "description": "My diary",
+                          "size": 1024,
+                          "created_at": "2020-10-12T11:20:44+00:00",
+                          "changed_at": "2023-05-25T23:07:39+00:00"
+                        },
+                        {
+                          "id": "9BD3BEA3-67E7-401A-9A45-C6CAB38A052A",
+                          "name": "sample02.png",
+                          "size": 1048576,
+                          "created_at": "2020-10-12T11:10:30+00:00",
+                          "changed_at": "2020-10-12T11:10:30+00:00"
+                        }
+                      ]
+                    }
         '400':
           $ref: '#/components/responses/bearerBadRequest'
         '401':
