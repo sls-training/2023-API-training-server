@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "ibm-openapi-validator": "^1.1.1"
+  }
+}
