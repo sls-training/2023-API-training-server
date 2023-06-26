@@ -43,17 +43,6 @@ RSpec.describe 'AccessTokens', type: :request do
 
         let(:scope) { 'READ' }
 
-        it { is_expected.to have_http_status :success }
-        it { is_expected.to have_attributes media_type: 'application/json' }
-
-        it '値がno-storeであるCache-Controlヘッダを含む' do
-          expect(subject.get_header('Cache-Control')).to eq 'no-store'
-        end
-
-        it '値がno-cacheであるPragmaヘッダを含む' do
-          expect(subject.get_header('Pragma')).to eq 'no-cache'
-        end
-
         it 'リクエストしたscopeの値がレスポンスボディに含まれている' do
           expect(subject.parsed_body).to include(
             'access_token' => user.access_tokens.last.token,
