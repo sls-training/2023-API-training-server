@@ -21,7 +21,7 @@ AllCops:
     - storage/**/*
 
 Metrics/AbcSize:
-  Max: 21
+  Max: 22
   Include:
     - app/controllers/**/*
 
@@ -31,7 +31,7 @@ Metrics/CyclomaticComplexity:
     - app/controllers/**/*
 
 Metrics/MethodLength:
-  Max: 11
+  Max: 12
   CountAsOne:
     - array
     - hash

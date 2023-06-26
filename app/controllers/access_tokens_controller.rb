@@ -9,6 +9,8 @@ class AccessTokensController < ApplicationController
     access_token = current_user.access_tokens.build access_token_params
 
     if access_token.save
+      set_disble_caching_headers
+
       render json: AccessTokenResource.new(access_token)
     elsif access_token.errors.key? :scope
       render problem: { error: 'invalid_scope' }, status: :bad_request
@@ -34,5 +36,10 @@ class AccessTokensController < ApplicationController
 
   def supported_grant_type?
     params[:grant_type] == 'password'
+  end
+
+  def set_disble_caching_headers
+    response.set_header 'Cache-Control', 'no-store'
+    response.set_header 'Pragma', 'no-cache'
   end
 end
