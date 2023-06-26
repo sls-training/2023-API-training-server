@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   has_many :access_tokens, dependent: :destroy
+  has_many :files, class_name: 'Item', dependent: :destroy
 
   validates :name, presence: true, length: { minimum: 1, maximum: 64 }
 
