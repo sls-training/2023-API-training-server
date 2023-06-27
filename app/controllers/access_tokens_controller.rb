@@ -38,7 +38,7 @@ class AccessTokensController < ApplicationController
   end
 
   def contains_required_params?
-    params.keys.to_set.superset? %w[grant_type username password].to_set
+    %w[grant_type username password].all? { |k| params.key? k }
   end
 
   def supported_grant_type?
