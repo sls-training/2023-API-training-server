@@ -5,9 +5,11 @@ class AccessTokensController < ApplicationController
   before_action :validate_grant_type
 
   def post
-    render problem: { error: 'invalid_grant' }, status: :bad_request and return if current_user.nil?
+    user = User.find_by(email: params[:username])&.authenticate params[:password]
 
-    access_token = current_user.access_tokens.build access_token_params
+    render problem: { error: 'invalid_grant' }, status: :bad_request and return unless user
+
+    access_token = user.access_tokens.build access_token_params
 
     if access_token.save
       set_disble_caching_headers
@@ -29,10 +31,6 @@ class AccessTokensController < ApplicationController
 
   def validate_grant_type
     render problem: { error: 'unsupported_grant_type' }, status: :bad_request unless supported_grant_type?
-  end
-
-  def current_user
-    @current_user ||= User.find_by(email: params[:username])&.authenticate params[:password]
   end
 
   def access_token_params
