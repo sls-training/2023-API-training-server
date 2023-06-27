@@ -365,17 +365,6 @@ paths:
             ログインに成功してアクセストークンが発行されたことを意味する。
 
             https://datatracker.ietf.org/doc/html/rfc6749#section-5.1
-          headers:
-            'Cache-Control':
-              schema:
-                type: string
-                enum:
-                  - no-store
-            'Pragma':
-              schema:
-                type: string
-                enum:
-                  - no-cache
           content:
             application/json:
               schema:
