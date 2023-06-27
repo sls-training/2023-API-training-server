@@ -26,13 +26,15 @@ RSpec.describe 'AccessTokens', type: :request do
         expect(subject.get_header('Pragma')).to eq 'no-cache'
       end
 
-      it 'レスポンスボディに発行したアクセストークンとそのメタデータを含む' do
-        expect(subject.parsed_body).to include(
-          'access_token' => user.access_tokens.last.token,
-          'token_type'   => 'bearer',
-          'expires_in'   => 1.hour,
-          'scope'        => 'READ WRITE'
-        )
+      context 'パラメータにscopeが含まれていないとき' do
+        it 'レスポンスボディに発行したアクセストークンとそのメタデータを含む' do
+          expect(subject.parsed_body).to include(
+            'access_token' => user.access_tokens.last.token,
+            'token_type'   => 'bearer',
+            'expires_in'   => 1.hour,
+            'scope'        => 'READ WRITE'
+          )
+        end
       end
 
       context 'パラメータにscopeが含まれているとき' do
