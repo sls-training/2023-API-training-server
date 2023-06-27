@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class AccessTokensController < ApplicationController
+  before_action :validate_required_params
+  before_action :validate_grant_type
+
   def post
-    render problem: { error: 'invalid_request' }, status: :bad_request and return unless contains_required_params?
-    render problem: { error: 'unsupported_grant_type' }, status: :bad_request and return unless supported_grant_type?
     render problem: { error: 'invalid_grant' }, status: :bad_request and return if current_user.nil?
 
     access_token = current_user.access_tokens.build access_token_params
@@ -21,6 +22,14 @@ class AccessTokensController < ApplicationController
   end
 
   private
+
+  def validate_required_params
+    render problem: { error: 'invalid_request' }, status: :bad_request unless contains_required_params?
+  end
+
+  def validate_grant_type
+    render problem: { error: 'unsupported_grant_type' }, status: :bad_request unless supported_grant_type?
+  end
 
   def current_user
     @current_user ||= User.find_by(email: params[:username])&.authenticate params[:password]
