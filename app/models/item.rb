@@ -9,7 +9,7 @@ class Item < ApplicationRecord
   validates :file, attached: true, size: { less_than_or_equal_to: 1.megabytes }
 
   # TODO: コールバック以外に適切な方法があるかもしれない。
-  before_validation :set_fallback_filename, unless: -> { name.present? }
+  before_validation :set_fallback_filename, if: -> { name.blank? }
 
   private
 
