@@ -311,23 +311,6 @@ components:
                   "error": "insufficient_scope",
                   "scope": "write"
                 }
-    internalServerError:
-      description: リクエスト自体は正しいが、サーバ上で何らかのエラーが発生し処理ができなかったことを意味する。
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/error'
-          examples:
-            fail_to_create_access_token:
-              summary: アクセストークンの生成に失敗した。
-              value:
-                {
-                  "status": 500,
-                  "title": "Internal Server Error",
-                  "errors": [
-                    { "name": "access_token", "reason": "can not be created successfully" }
-                  ]
-                }
   parameters:
     fileId:
       name: fileId
@@ -453,8 +436,6 @@ paths:
                   - status
                   - title
                   - error
-        '500':
-          $ref: '#/components/responses/internalServerError'
   /signout:
     post:
       summary: 発行したアクセストークンを失効させる。
