@@ -29,4 +29,8 @@ class AccessToken < ApplicationRecord
   def revoke
     update revoked_at: Time.current if revoked_at.nil?
   end
+
+  def authorize?(required_scope)
+    scope.split.member? required_scope
+  end
 end
