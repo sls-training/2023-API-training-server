@@ -17,7 +17,7 @@ RSpec.describe Item, type: :model do
       it { is_expected.to be_truthy }
     end
 
-    context 'パラメータが不正なとき' do
+    context 'ファイルが指定されていないとき' do
       let(:item) { described_class.new file:, user: }
       let(:file) { nil }
 
