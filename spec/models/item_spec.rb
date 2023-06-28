@@ -24,17 +24,6 @@ RSpec.describe Item, type: :model do
       it { is_expected.to be_falsey }
     end
 
-    context '同名のファイルが存在するとき' do
-      let(:item) { described_class.new file:, user: }
-      let(:file) { fixture_file_upload 'empty.txt' }
-
-      before do
-        described_class.create! file:, user:
-      end
-
-      it { is_expected.to be_falsey }
-    end
-
     context '名前を省略したとき' do
       let(:item) { described_class.new file:, user: }
       let(:file) { fixture_file_upload 'empty.txt' }
@@ -44,6 +33,17 @@ RSpec.describe Item, type: :model do
       it '保存されるファイルの名前をファイル名として設定する' do
         expect { subject }.to change(item, :name).from(nil).to file.original_filename
       end
+    end
+
+    context '同名のファイルが存在するとき' do
+      let(:item) { described_class.new file:, user: }
+      let(:file) { fixture_file_upload 'empty.txt' }
+
+      before do
+        described_class.create! file:, user:
+      end
+
+      it { is_expected.to be_falsey }
     end
 
     context '別のユーザが同名のファイル名のファイルを所有しているとき' do
