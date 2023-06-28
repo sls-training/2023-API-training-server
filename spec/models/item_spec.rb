@@ -29,7 +29,7 @@ RSpec.describe Item, type: :model do
       let(:file) { fixture_file_upload 'empty.txt' }
 
       before do
-        described_class.new(file:, user:).save
+        described_class.create! file:, user:
       end
 
       it { is_expected.to be_falsey }
@@ -52,7 +52,7 @@ RSpec.describe Item, type: :model do
       let(:another_user) { FactoryBot.create :user }
 
       before do
-        another_user.files.create file:
+        another_user.files.create! file:
       end
 
       it { is_expected.to be_truthy }
