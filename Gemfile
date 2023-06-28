@@ -21,8 +21,11 @@ group :development, :test do
   gem 'brakeman', '~> 6.0', require: false
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'faker', '~> 3.2'
-  gem 'katakata_irb', '~> 0.1.9', require: false
   gem 'rbs_rails', '~> 0.12.0', require: false
+
+  github 'tompng/katakata_irb' do
+    gem 'katakata_irb', require: false
+  end
 
   gem 'factory_bot_rails', '~> 6.2'
   gem 'rspec-mocks', '~> 3.12.5'
