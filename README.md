@@ -10,6 +10,14 @@ docker compose run --rm app bin/setup
 docker compose up -d
 ```
 
+### Optional
+
+Install type signatures.
+
+```sh
+docker compose exec app bundle exec rbs collection install
+```
+
 ## Test
 
 ```sh
