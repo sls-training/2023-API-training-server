@@ -24,7 +24,7 @@ RSpec.describe Item, type: :model do
       it { is_expected.to be_falsey }
     end
 
-    context '名前を省略したとき' do
+    context 'ファイル名が指定されていないとき' do
       let(:item) { described_class.new file:, user: }
       let(:file) { fixture_file_upload 'empty.txt' }
 
