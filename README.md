@@ -15,7 +15,7 @@ docker compose up -d
 Install type signatures.
 
 ```sh
-docker compose exec app bundle exec rbs collection install
+docker compose exec app bundle exec rbs collection install --frozen
 ```
 
 ## Test
