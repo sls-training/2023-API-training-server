@@ -20,6 +20,15 @@ AllCops:
     - public/**/*
     - storage/**/*
 
+Metrics/MethodLength:
+  Max: 12
+  CountAsOne:
+    - array
+    - hash
+    - heredoc
+  Include:
+    - app/controllers/**/*
+
 RSpec/ExampleLength:
   CountAsOne:
     - array
