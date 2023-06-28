@@ -15,4 +15,4 @@
 /config/master.key
 
 /node_modules/*
-.irb_history
+/.irb_history
