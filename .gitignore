@@ -17,4 +17,3 @@
 /node_modules/*
 /.irb_history
 /.gem_rbs_collection/*
-/sig/rbs_rails
