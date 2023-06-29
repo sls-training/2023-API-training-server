@@ -77,6 +77,9 @@ jobs:
         with:
           bundler-cache: true
 
+      - name: Install type signatures for 3rd-party gems
+        run: bundle exec rbs collection install --frozen
+
       - name: Type check with steep
         run: bundle exec steep check
 
