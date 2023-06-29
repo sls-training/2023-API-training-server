@@ -1,0 +1,7 @@
+class AccessToken < ApplicationRecord
+  def expired?: () -> bool
+
+  def revoked?: () -> bool
+
+  def revoke: () -> untyped
+end

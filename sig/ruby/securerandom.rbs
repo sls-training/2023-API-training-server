@@ -1,0 +1,3 @@
+module SecureRandom
+  def self.base64: (?(Integer | nil)) -> String
+end

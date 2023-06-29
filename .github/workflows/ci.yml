@@ -67,6 +67,22 @@ jobs:
       - name: Run Brakeman
         run: bundle exec brakeman
 
+  steep:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install type signatures for 3rd-party gems
+        run: bundle exec rbs collection install --frozen
+
+      - name: Type check with steep
+        run: bundle exec steep check
+
   openapi-validator:
     runs-on: ubuntu-latest
 

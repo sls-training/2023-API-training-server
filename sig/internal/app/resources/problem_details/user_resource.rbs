@@ -1,0 +1,10 @@
+module ProblemDetails
+  class UserResource
+    # TODO: Uncomment this if Alba contains rbs.
+    # include Alba::Resource
+
+    def initialize: (User) -> UserResource
+
+    def to_hash: () -> Hash[Symbol, untyped]
+  end
+end
