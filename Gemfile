@@ -7,6 +7,7 @@ ruby '3.2.2'
 
 gem 'rails', '~> 7.0.5'
 
+gem 'active_storage_validations', '~> 1.0.4'
 gem 'alba', '~> 2.3'
 gem 'bcrypt', '~> 3.1.18'
 gem 'bootsnap', require: false
