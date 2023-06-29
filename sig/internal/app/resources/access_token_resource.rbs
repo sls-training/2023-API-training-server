@@ -1,0 +1,6 @@
+class AccessTokenResource
+  # TODO: Uncomment this if Alba contains rbs.
+  # include Alba::Resource
+
+  def initialize: (AccessToken) -> AccessTokenResource
+end

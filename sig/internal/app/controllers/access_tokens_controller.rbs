@@ -1,0 +1,17 @@
+class AccessTokensController < ApplicationController
+  def post: () -> untyped
+
+  private
+
+  def validate_required_params: () -> untyped
+
+  def validate_grant_type: () -> untyped
+
+  def access_token_params: () -> ActionController::Parameters
+
+  def contains_required_params?: () -> bool
+
+  def supported_grant_type?: () -> bool
+
+  def set_disble_caching_headers: () -> untyped
+end

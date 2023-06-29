@@ -67,6 +67,19 @@ jobs:
       - name: Run Brakeman
         run: bundle exec brakeman
 
+  steep:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Type check with steep
+        run: bundle exec steep check
+
   openapi-validator:
     runs-on: ubuntu-latest
 

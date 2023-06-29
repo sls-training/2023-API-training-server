@@ -1,0 +1,5 @@
+module URI
+  class MailTo < Generic
+    EMAIL_REGEXP: Regexp
+  end
+end

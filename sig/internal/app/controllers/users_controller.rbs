@@ -1,0 +1,7 @@
+class UsersController < ApplicationController
+  def post: () -> untyped
+
+  private
+
+  def user_params: () -> ActionController::Parameters
+end

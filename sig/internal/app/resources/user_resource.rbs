@@ -1,0 +1,6 @@
+class UserResource
+  # TODO: Uncomment this if Alba contains rbs.
+  # include Alba::Resource
+
+  def initialize: (User) -> UserResource
+end

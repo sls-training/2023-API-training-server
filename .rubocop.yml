@@ -9,6 +9,7 @@ AllCops:
   NewCops: disable
   TargetRubyVersion: 3.2
   Exclude:
+    - Steepfile
     - .irbrc
     - bin/**/*
     - config/*
