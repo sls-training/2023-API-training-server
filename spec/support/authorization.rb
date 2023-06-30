@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# 利用する場合は、リクエストの送り先を #let や #let! を使って request_path という名前で宣言しておく必要がある。
+#
+# it_behave_like 'OAuth 2.0のResource Owner Password Credentials Grantを利用したBearer Tokenによる認可を行う' do
+#   let(:request_path) { '/path/to/resource' }
+# end
 RSpec.shared_examples 'OAuth 2.0のResource Owner Password Credentials Grantを利用したBearer Tokenによる認可を行う' do
   context '認証に必要なパラメータが欠落しているとき' do
     subject do
