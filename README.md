@@ -18,6 +18,12 @@ Install type signatures.
 docker compose exec app bundle exec rbs collection install --frozen
 ```
 
+Generate type signatures for this Rails application.
+
+```sh
+bin/rails rbs_rails:all
+```
+
 ## Test
 
 ```sh

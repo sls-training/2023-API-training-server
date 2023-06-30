@@ -22,6 +22,7 @@ group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'faker', '~> 3.2'
   gem 'katakata_irb', '~> 0.1.9', require: false
+  gem 'rbs_rails', '~> 0.12.0', require: false
 
   gem 'factory_bot_rails', '~> 6.2'
   gem 'rspec-mocks', '~> 3.12.5'
