@@ -6,7 +6,7 @@ module Authorization
   include ActionController::HttpAuthentication::Token
 
   included do
-    before_action :set_token_string, :validate_authentication_header
+    before_action :set_token_and_options, :validate_token_and_options
     before_action :set_access_token, :authenticate_access_token
     before_action :authorize_access_token_as_readable, only: %i[index show]
     before_action :authorize_access_token_as_writable, only: %i[create update destroy]
@@ -18,14 +18,16 @@ module Authorization
     @token_string ||= nil
   end
 
-  def set_token_string
-    token, options = token_and_options request
-
-    @token_string = token if token.present? && options.empty?
+  def token_options
+    @token_options ||= nil
   end
 
-  def validate_authentication_header
-    render problem: { error: 'invalid_request' }, status: :bad_request if token_string.blank?
+  def set_token_and_options
+    @token_string, @token_options = token_and_options request
+  end
+
+  def validate_token_and_options
+    render problem: { error: 'invalid_request' }, status: :bad_request if token_string.blank? || token_options.present?
   end
 
   def access_token
