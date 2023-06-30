@@ -22,6 +22,8 @@ module Authorization
     @token_options ||= nil
   end
 
+  # NOTE: #token_and_options の仕様上、Authorizationヘッダのトークンタイプが Bearer だけでなく Token の場合も正当なフォーマットとして受理される。
+  # ここではどうしてもどちらか一方のみを有効にしなければならないわけではないので、そのままにしておく。
   def set_token_and_options
     @token_string, @token_options = token_and_options request
   end
