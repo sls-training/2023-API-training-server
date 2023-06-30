@@ -15,10 +15,6 @@ class ItemsController < ApplicationController
 
   private
 
-  def current_user
-    access_token.user
-  end
-
   def file_params
     params.permit :name, :description, :file
   end

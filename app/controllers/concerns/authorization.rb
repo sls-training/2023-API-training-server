@@ -49,4 +49,8 @@ module Authorization
   def authorize_access_token_as_writable
     authorize_access_token_as 'WRITE'
   end
+
+  def current_user
+    access_token&.user
+  end
 end
