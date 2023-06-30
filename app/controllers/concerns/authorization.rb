@@ -5,8 +5,6 @@ module Authorization
 
   include ActionController::HttpAuthentication::Token
 
-  attr_reader :token_string, :token_options
-
   included do
     before_action :set_token_and_options, :validate_token_and_options
     before_action :set_access_token, :authenticate_access_token
@@ -23,7 +21,9 @@ module Authorization
   end
 
   def validate_token_and_options
-    render problem: { error: 'invalid_request' }, status: :bad_request if token_string.blank? || token_options.present?
+    return unless @token_string.blank? || @token_options.present?
+
+    render problem: { error: 'invalid_request' }, status: :bad_request
   end
 
   def access_token
@@ -31,7 +31,7 @@ module Authorization
   end
 
   def set_access_token
-    @access_token = AccessToken.find_by token: token_string
+    @access_token = AccessToken.find_by token: @token_string
   end
 
   def authenticate_access_token
