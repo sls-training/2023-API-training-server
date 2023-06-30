@@ -5,6 +5,8 @@ module Authorization
 
   include ActionController::HttpAuthentication::Token
 
+  attr_reader :token_string, :token_options
+
   included do
     before_action :set_token_and_options, :validate_token_and_options
     before_action :set_access_token, :authenticate_access_token
@@ -13,14 +15,6 @@ module Authorization
   end
 
   private
-
-  def token_string
-    @token_string ||= nil
-  end
-
-  def token_options
-    @token_options ||= nil
-  end
 
   # NOTE: #token_and_options の仕様上、Authorizationヘッダのトークンタイプが Bearer だけでなく Token の場合も正当なフォーマットとして受理される。
   # ここではどうしてもどちらか一方のみを有効にしなければならないわけではないので、そのままにしておく。
