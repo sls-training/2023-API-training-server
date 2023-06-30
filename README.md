@@ -27,6 +27,6 @@ bin/rails rbs_rails:all
 ## Test
 
 ```sh
-docker compose exec rubocop bundle exec rubocop
-docker compose exec app bundle exec rspec
+docker compose exec rubocop bin/rubocop
+docker compose exec app bin/rspec
 ```
