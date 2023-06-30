@@ -37,7 +37,7 @@ module Authorization
   end
 
   def authorize_access_token_as(scope)
-    return if access_token.authorize? scope
+    return if access_token.authorized? scope
 
     render problem: { error: 'insufficient_scope', scope: }, status: :forbidden
   end
