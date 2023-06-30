@@ -7,7 +7,7 @@ module Authorization
 
   included do
     before_action :set_token_and_options, :validate_token_and_options
-    before_action :set_access_token, :authenticate_access_token
+    before_action :authenticate_access_token
     before_action :authorize_access_token_as_readable, only: %i[index show]
     before_action :authorize_access_token_as_writable, only: %i[create update destroy]
   end
@@ -27,11 +27,7 @@ module Authorization
   end
 
   def access_token
-    @access_token ||= nil
-  end
-
-  def set_access_token
-    @access_token = AccessToken.find_by token: @token_string
+    @access_token ||= AccessToken.find_by token: @token_string
   end
 
   def authenticate_access_token
