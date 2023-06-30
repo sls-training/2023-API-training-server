@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  def post
+  def create
     user = User.new user_params
 
     if user.save

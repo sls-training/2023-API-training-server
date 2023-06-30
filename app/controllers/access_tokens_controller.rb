@@ -4,7 +4,7 @@ class AccessTokensController < ApplicationController
   before_action :validate_required_params
   before_action :validate_grant_type
 
-  def post
+  def create
     user = User.find_by(email: params[:username])&.authenticate params[:password]
 
     render problem: { error: 'invalid_grant' }, status: :bad_request and return unless user
