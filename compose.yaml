@@ -21,7 +21,7 @@ services:
 
   rubocop:
     <<: *app-template
-    command: bundle exec rubocop --start-server --no-detach
+    command: bin/rubocop --start-server --no-detach
 
   db:
     image: postgres:15.3-bullseye
