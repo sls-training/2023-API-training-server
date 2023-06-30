@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples 'Authorize using Bearer token with Resource Owner Password Credentials Grant of OAuth 2.0' do
+RSpec.shared_examples 'OAuth 2.0のResource Owner Password Credentials Grantを利用したBearer Tokenによる認可を行う' do
   context '認証に必要なパラメータが欠落しているとき' do
     subject do
       post request_path

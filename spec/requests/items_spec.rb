@@ -56,7 +56,7 @@ RSpec.describe 'Items', type: :request do
       end
     end
 
-    it_behaves_like 'Authorize using Bearer token with Resource Owner Password Credentials Grant of OAuth 2.0' do
+    it_behaves_like 'OAuth 2.0のResource Owner Password Credentials Grantを利用したBearer Tokenによる認可を行う' do
       let(:request_path) { files_path }
     end
   end
