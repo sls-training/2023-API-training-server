@@ -4,8 +4,7 @@ class ItemsController < ApplicationController
   include Authorization
 
   def create
-    user = access_token.user
-    file = user.files.build file_params
+    file = current_user.files.build file_params
 
     if file.save
       render json: ItemResource.new(file), status: :created
@@ -15,6 +14,10 @@ class ItemsController < ApplicationController
   end
 
   private
+
+  def current_user
+    access_token.user
+  end
 
   def file_params
     params.permit :name, :description, :file
