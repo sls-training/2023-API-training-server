@@ -30,6 +30,10 @@ Metrics/MethodLength:
   Include:
     - app/controllers/**/*
 
+Rails/LexicallyScopedActionFilter:
+  Exclude:
+    - app/controllers/concerns/authorization.rb
+
 RSpec/ExampleLength:
   CountAsOne:
     - array
