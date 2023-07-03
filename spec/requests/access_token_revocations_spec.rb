@@ -20,6 +20,23 @@ RSpec.describe 'AccessTokenRevocations', type: :request do
       end
     end
 
+    context 'すでに無効化されているアクセストークンを渡したとき' do
+      subject do
+        post signout_path, params: { token: access_token.token }
+        response
+      end
+
+      before do
+        access_token.revoke
+      end
+
+      it { is_expected.to have_http_status :success }
+
+      it '渡されたトークンに対応するアクセストークンは無効化されたままである' do
+        expect { subject }.not_to(change { access_token.reload.revoked? })
+      end
+    end
+
     context '不正なパラメータを渡したとき' do
       subject do
         post signout_path, params: { token: Faker::String.random }
