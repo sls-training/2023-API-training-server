@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: https://github.com/tompng/katakata_irb.git
-  revision: c731ff8e7caba5f91fd1085d1a3fddae2e9113cd
+  revision: 2ef74ede1e50544c27cad95731cdb5b5aa1f47fb
   specs:
     katakata_irb (0.1.9)
       irb (>= 1.4.0)
