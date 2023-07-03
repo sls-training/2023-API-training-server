@@ -7,7 +7,7 @@ RSpec.describe 'AccessTokenRevocations', type: :request do
     let(:user) { FactoryBot.create :user }
     let(:access_token) { user.access_tokens.create! }
 
-    context '正当なパラメータを渡したとき' do
+    context 'まだ無効化されていないアクセストークンを渡したとき' do
       subject do
         post signout_path, params: { token: access_token.token }
         response
@@ -15,7 +15,7 @@ RSpec.describe 'AccessTokenRevocations', type: :request do
 
       it { is_expected.to have_http_status :success }
 
-      it '渡されたトークンに対応するアクセストークンが失効される' do
+      it '渡されたトークンに対応するアクセストークンが無効化される' do
         expect { subject }.to change { access_token.reload.revoked? }.from(false).to true
       end
     end
@@ -37,7 +37,7 @@ RSpec.describe 'AccessTokenRevocations', type: :request do
       end
     end
 
-    context '不正なパラメータを渡したとき' do
+    context '存在しないアクセストークンを渡したとき' do
       subject do
         post signout_path, params: { token: Faker::String.random }
         response
