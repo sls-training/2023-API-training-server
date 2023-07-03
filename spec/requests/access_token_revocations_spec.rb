@@ -39,7 +39,7 @@ RSpec.describe 'AccessTokenRevocations', type: :request do
 
     context '存在しないアクセストークンを渡したとき' do
       subject do
-        post signout_path, params: { token: Faker::String.random }
+        post signout_path, params: { token: Faker::Alphanumeric.alphanumeric }
         response
       end
 
