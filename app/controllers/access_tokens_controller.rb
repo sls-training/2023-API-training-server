@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class AccessTokensController < ApplicationController
-  before_action :validate_required_params, only: :create
-  before_action :validate_grant_type, only: :create
+  before_action :validate_required_params
+  before_action :validate_grant_type
 
   def create
     user = User.find_by(email: params[:username])&.authenticate params[:password]
@@ -21,15 +21,6 @@ class AccessTokensController < ApplicationController
       render problem: { errors: [{ name: 'access_token', reason: 'can not be created successfully' }] },
              status:  :internal_server_error
     end
-  end
-
-  def destroy
-    access_token = AccessToken.find_by token: params[:token]
-
-    render problem: { error: 'invalid_request' }, status: :bad_request and return unless access_token
-
-    access_token.revoke
-    head :ok
   end
 
   private
