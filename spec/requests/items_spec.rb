@@ -21,6 +21,7 @@ RSpec.describe 'Items', type: :request do
 
         it { is_expected.to have_http_status :created }
         it { is_expected.to have_attributes media_type: 'application/json' }
+        it { expect { subject }.to change(Item, :count).by 1 }
 
         it 'アップロードしたファイルのメタデータがボディにJSONとして格納される' do
           expect(subject.parsed_body).to include(
