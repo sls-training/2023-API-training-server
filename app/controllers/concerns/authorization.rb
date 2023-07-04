@@ -8,8 +8,8 @@ module Authorization
   included do
     before_action :set_token_and_options, :validate_token_and_options
     before_action :authenticate_access_token
-    before_action :authorize_access_token_as_readable, only: %i[index show]
-    before_action :authorize_access_token_as_writable, only: %i[create update destroy]
+    before_action :require_authorized_as_readable, only: %i[index show]
+    before_action :require_authorized_as_writable, only: %i[create update destroy]
   end
 
   private
@@ -36,18 +36,18 @@ module Authorization
     render problem: { error: 'invalid_token' }, status: :unauthorized
   end
 
-  def authorize_access_token_as(scope)
+  def require_authorized_as(scope)
     return if access_token.authorized? scope
 
     render problem: { error: 'insufficient_scope', scope: }, status: :forbidden
   end
 
-  def authorize_access_token_as_readable
-    authorize_access_token_as 'READ'
+  def require_authorized_as_readable
+    require_authorized_as 'READ'
   end
 
-  def authorize_access_token_as_writable
-    authorize_access_token_as 'WRITE'
+  def require_authorized_as_writable
+    require_authorized_as 'WRITE'
   end
 
   def current_user
