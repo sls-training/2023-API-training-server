@@ -23,6 +23,16 @@ services:
     <<: *app-template
     command: bin/rubocop --start-server --no-detach
 
+  rspec:
+    <<: *app-template
+    command: bin/rspec-daemon
+    ports:
+      - 3002:3002
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: root
+
   db:
     image: postgres:15.3-bullseye
     environment:
