@@ -35,6 +35,13 @@ RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = Rails.root.join '/spec/fixtures'
 
+  # NOTE: rspec-daemonは、初回実行以降、RSpecを実行するたびにRSpecの設定を初期化する。
+  # file_fixture_path もそれによって初期化される値の一つであり、この値に適切な値が設定されて
+  # いない場合、テストで利用するヘルパーメソッドである #file_fixture_path を実行するとエラーが
+  # 発生する。この問題を解決するために、必要な値を明示的に設定しておく。
+  # なお、この値のデフォルト値は 'spec/fixtures/files' である。
+  config.file_fixture_path = Rails.root.join 'spec/fixtures/files'
+
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
