@@ -20,6 +20,7 @@ jobs:
         env:
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_INITDB_ARGS: --encoding=UTF-8 --locale=C
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -29,6 +30,9 @@ jobs:
           - 5432:5432
 
     steps:
+      - name: Comfirm the current locale is C.UTF-8
+        run: '[[ $LANG == C.UTF-8 ]]'
+
       - uses: actions/checkout@v3
 
       - uses: ruby/setup-ruby@v1
