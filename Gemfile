@@ -11,6 +11,7 @@ gem 'active_storage_validations', '~> 1.0.4'
 gem 'alba', '~> 2.3'
 gem 'bcrypt', '~> 3.1.18'
 gem 'bootsnap', require: false
+gem 'kaminari', '~> 1.1'
 gem 'pg', '~> 1.1'
 gem 'problem_details-rails', '~> 0.2.3'
 gem 'puma', '~> 6.3'
