@@ -41,7 +41,7 @@ class ItemsController < ApplicationController
     valid_orderbys = %i[id name description size created_at updated_at]
     orderby = params[:orderby]&.to_sym
 
-    if valid_orderbys.any? orderby
+    if orderby.in? valid_orderbys
       orderby == :size ? 'active_storage_blobs.byte_size' : orderby
     else
       :created_at
