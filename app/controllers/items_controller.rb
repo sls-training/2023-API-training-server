@@ -4,11 +4,9 @@ class ItemsController < ApplicationController
   include Authorization
 
   def index
-    files = current_user.files
-              .joins(:file_blob)
-              .order(index_orderby_param => index_order_param)
-              .page(index_page_param)
-              .per(index_per_param)
+    files = paginate current_user.files
+                       .joins(:file_blob)
+                       .order(index_orderby_param => index_order_param)
 
     render json: ItemResource.new(files).serialize(root_key: :files)
   end
@@ -27,14 +25,6 @@ class ItemsController < ApplicationController
 
   def file_params
     params.permit :name, :description, :file
-  end
-
-  def index_page_param
-    params[:page]
-  end
-
-  def index_per_param
-    params[:per]
   end
 
   def index_orderby_param
