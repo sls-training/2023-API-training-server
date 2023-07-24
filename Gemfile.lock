@@ -93,6 +93,7 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
     alba (2.3.0)
+    api-pagination (5.0.0)
     ast (2.4.2)
     bcrypt (3.1.18)
     bootsnap (1.16.0)
@@ -287,6 +288,7 @@ PLATFORMS
 DEPENDENCIES
   active_storage_validations (~> 1.0.4)
   alba (~> 2.3)
+  api-pagination (~> 5.0)
   bcrypt (~> 3.1.18)
   bootsnap
   brakeman (~> 6.0)

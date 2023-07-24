@@ -9,6 +9,7 @@ gem 'rails', '~> 7.0.5'
 
 gem 'active_storage_validations', '~> 1.0.4'
 gem 'alba', '~> 2.3'
+gem 'api-pagination', '~> 5.0'
 gem 'bcrypt', '~> 3.1.18'
 gem 'bootsnap', require: false
 gem 'kaminari', '~> 1.1'
