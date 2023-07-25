@@ -23,6 +23,24 @@ RSpec.describe 'Items', type: :request do
         it { is_expected.to have_http_status :success }
         it { is_expected.to have_attributes media_type: 'application/json' }
 
+        it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+          links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+          expect(links.relation_types).to include('last', 'next')
+        end
+
+        it 'Pageヘッダーに現在のページ番号が含まれている' do
+          expect(subject.headers.to_h).to include({ 'Page' => '1' })
+        end
+
+        it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+          expect(subject.headers.to_h).to include({ 'Per' => '20' })
+        end
+
+        it 'Totalヘッダーにファイル総数が含まれている' do
+          expect(subject.headers.to_h).to include({ 'Total' => '21' })
+        end
+
         it 'filesキーにアップロード済みファイル一覧が格納される' do
           expect(subject.parsed_body).to include(
             'files' => include(
@@ -71,6 +89,24 @@ RSpec.describe 'Items', type: :request do
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it '1ページ目のファイル一覧を取得する。' do
             first_page_file_ids = user.files.sort_by(&:created_at).take(20).map { |h| h['id'] }
 
@@ -84,6 +120,24 @@ RSpec.describe 'Items', type: :request do
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('first', 'prev')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '2' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it '2ページ目のファイル一覧を取得する。' do
             second_page_file_ids = user.files.sort_by(&:created_at).drop(20).take(20).map { |h| h['id'] }
 
@@ -96,6 +150,24 @@ RSpec.describe 'Items', type: :request do
 
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
+
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
 
           it '1ページ目のファイル一覧を取得する。' do
             first_page_file_ids = user.files.sort_by(&:created_at).take(20).map { |h| h['id'] }
@@ -112,7 +184,7 @@ RSpec.describe 'Items', type: :request do
         end
 
         before do
-          FactoryBot.create_list :item, 20, file:, user:
+          FactoryBot.create_list :item, 21, file:, user:
         end
 
         context '10のとき' do
@@ -120,6 +192,24 @@ RSpec.describe 'Items', type: :request do
 
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
+
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '10' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
 
           it 'ファイル一覧に含まれるファイルの件数は10である。' do
             expect(subject.parsed_body['files']).to have_attributes(size: 10)
@@ -132,6 +222,24 @@ RSpec.describe 'Items', type: :request do
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it 'ファイル一覧に含まれるファイルの件数は20である。' do
             expect(subject.parsed_body['files']).to have_attributes(size: 20)
           end
@@ -142,6 +250,24 @@ RSpec.describe 'Items', type: :request do
 
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
+
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
 
           it 'ファイル一覧に含まれるファイルの件数は20である。' do
             expect(subject.parsed_body['files']).to have_attributes(size: 20)
@@ -156,7 +282,7 @@ RSpec.describe 'Items', type: :request do
         end
 
         before do
-          FactoryBot.create_list :item, 20, file:, user:
+          FactoryBot.create_list :item, 21, file:, user:
         end
 
         context 'ascのとき' do
@@ -165,8 +291,26 @@ RSpec.describe 'Items', type: :request do
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it 'ファイル一覧が昇順にソートされている' do
-            sorted_file_ids = user.files.sort_by(&:created_at).map(&:id)
+            sorted_file_ids = user.files.sort_by(&:created_at).take(20).map(&:id)
 
             expect(subject.parsed_body['files'].map { |h| h['id'] }).to eq sorted_file_ids
           end
@@ -178,8 +322,26 @@ RSpec.describe 'Items', type: :request do
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it 'ファイル一覧が降順にソートされている' do
-            sorted_file_ids = user.files.sort_by(&:created_at).map(&:id).reverse
+            sorted_file_ids = user.files.sort_by(&:created_at).drop(1).map(&:id).reverse
 
             expect(subject.parsed_body['files'].map { |h| h['id'] }).to eq sorted_file_ids
           end
@@ -191,8 +353,26 @@ RSpec.describe 'Items', type: :request do
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it 'ファイル一覧が昇順にソートされている' do
-            sorted_file_ids = user.files.sort_by(&:created_at).map(&:id)
+            sorted_file_ids = user.files.sort_by(&:created_at).take(20).map(&:id)
 
             expect(subject.parsed_body['files'].map { |h| h['id'] }).to eq sorted_file_ids
           end
@@ -209,14 +389,32 @@ RSpec.describe 'Items', type: :request do
           let(:orderby) { :id }
 
           before do
-            FactoryBot.create_list :item, 20, file:, user:
+            FactoryBot.create_list :item, 21, file:, user:
           end
 
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it 'ID順にソートされている' do
-            sorted_file_ids = user.files.sort_by(&:id).map(&:id)
+            sorted_file_ids = user.files.sort_by(&:id).take(20).map(&:id)
 
             expect(subject.parsed_body['files'].map { |h| h['id'] }).to eq sorted_file_ids
           end
@@ -226,14 +424,32 @@ RSpec.describe 'Items', type: :request do
           let(:orderby) { :name }
 
           before do
-            FactoryBot.create_list :item, 20, file:, user:
+            FactoryBot.create_list :item, 21, file:, user:
           end
 
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it '名前順にソートされている' do
-            sorted_file_ids = user.files.sort_by(&:name).map(&:id)
+            sorted_file_ids = user.files.sort_by(&:name).take(20).map(&:id)
 
             expect(subject.parsed_body['files'].map { |h| h['id'] }).to eq sorted_file_ids
           end
@@ -243,7 +459,7 @@ RSpec.describe 'Items', type: :request do
           let(:orderby) { :description }
 
           before do
-            FactoryBot.build_list(:item, 20, file:, user:) do |item|
+            FactoryBot.build_list(:item, 21, file:, user:) do |item|
               item.description = Faker::Lorem.characters
               item.save!
             end
@@ -252,8 +468,26 @@ RSpec.describe 'Items', type: :request do
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it '説明文をキーにしてソートされている' do
-            sorted_file_ids = user.files.sort_by(&:description).map(&:id)
+            sorted_file_ids = user.files.sort_by(&:description).take(20).map(&:id)
 
             expect(subject.parsed_body['files'].map { |h| h['id'] }).to eq sorted_file_ids
           end
@@ -263,7 +497,7 @@ RSpec.describe 'Items', type: :request do
           let(:orderby) { :size }
 
           before do
-            FactoryBot.build_list(:item, 20, file:, user:).shuffle.each_with_index do |item, i|
+            FactoryBot.build_list(:item, 21, file:, user:).shuffle.each_with_index do |item, i|
               item.file.byte_size = i
               item.save!
             end
@@ -272,8 +506,26 @@ RSpec.describe 'Items', type: :request do
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it 'ファイルサイズをキーにしてソートされている' do
-            sorted_file_ids = user.files.sort_by { |item| item.file.byte_size }.map(&:id)
+            sorted_file_ids = user.files.sort_by { |item| item.file.byte_size }.take(20).map(&:id)
 
             expect(subject.parsed_body['files'].map { |h| h['id'] }).to eq sorted_file_ids
           end
@@ -283,14 +535,32 @@ RSpec.describe 'Items', type: :request do
           let(:orderby) { :created_at }
 
           before do
-            FactoryBot.create_list :item, 20, file:, user:
+            FactoryBot.create_list :item, 21, file:, user:
           end
 
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it '作成日時をキーにしてソートされている' do
-            sorted_file_ids = user.files.sort_by(&:created_at).map(&:id)
+            sorted_file_ids = user.files.sort_by(&:created_at).take(20).map(&:id)
 
             expect(subject.parsed_body['files'].map { |h| h['id'] }).to eq sorted_file_ids
           end
@@ -300,14 +570,32 @@ RSpec.describe 'Items', type: :request do
           let(:orderby) { :updated_at }
 
           before do
-            FactoryBot.create_list(:item, 20, file:, user:).shuffle.each(&:touch)
+            FactoryBot.create_list(:item, 21, file:, user:).shuffle.each(&:touch)
           end
 
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it '更新日時をキーにしてソートされている' do
-            sorted_file_ids = user.files.sort_by(&:updated_at).map(&:id)
+            sorted_file_ids = user.files.sort_by(&:updated_at).take(20).map(&:id)
 
             expect(subject.parsed_body['files'].map { |h| h['id'] }).to eq sorted_file_ids
           end
@@ -317,16 +605,152 @@ RSpec.describe 'Items', type: :request do
           let(:orderby) { :foo }
 
           before do
-            FactoryBot.create_list :item, 20, file:, user:
+            FactoryBot.create_list :item, 21, file:, user:
           end
 
           it { is_expected.to have_http_status :success }
           it { is_expected.to have_attributes media_type: 'application/json' }
 
+          it 'Linkヘッダーにページネーション用のリンクが含まれている' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '21' })
+          end
+
           it '作成日時をキーにしてソートされている' do
-            sorted_file_ids = user.files.sort_by(&:created_at).map(&:id)
+            sorted_file_ids = user.files.sort_by(&:created_at).take(20).map(&:id)
 
             expect(subject.parsed_body['files'].map { |h| h['id'] }).to eq sorted_file_ids
+          end
+        end
+      end
+
+      context 'ファイル総数が1ページに収まるとき' do
+        subject do
+          get files_path, headers: { Authorization: "Bearer #{access_token.token}" }
+          response
+        end
+
+        before do
+          FactoryBot.create_list :item, 10, file:, user:
+        end
+
+        it { is_expected.to have_http_status :success }
+        it { is_expected.to have_attributes media_type: 'application/json' }
+
+        it 'Linkヘッダーにページネーション関連のリンクが含まれない' do
+          links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+          expect(links.relation_types).not_to include('first', 'last', 'next', 'prev')
+        end
+
+        it 'Pageヘッダーに現在のページ番号が含まれている' do
+          expect(subject.headers.to_h).to include({ 'Page' => '1' })
+        end
+
+        it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+          expect(subject.headers.to_h).to include({ 'Per' => '20' })
+        end
+
+        it 'Totalヘッダーにファイル総数が含まれている' do
+          expect(subject.headers.to_h).to include({ 'Total' => '10' })
+        end
+      end
+
+      context 'ファイル総数が1ページに収まらないとき' do
+        subject do
+          get files_path, params: { page: }, headers: { Authorization: "Bearer #{access_token.token}" }
+          response
+        end
+
+        before do
+          FactoryBot.create_list :item, 41, file:, user:
+        end
+
+        context '最初のページのとき' do
+          let(:page) { 1 }
+
+          it { is_expected.to have_http_status :success }
+          it { is_expected.to have_attributes media_type: 'application/json' }
+
+          it 'Linkヘッダーにページネーション関連のリンクが含まれる' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('last', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '1' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '41' })
+          end
+        end
+
+        context '中間のページのとき' do
+          let(:page) { 2 }
+
+          it { is_expected.to have_http_status :success }
+          it { is_expected.to have_attributes media_type: 'application/json' }
+
+          it 'Linkヘッダーにページネーション関連のリンクが含まれる' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('first', 'last', 'prev', 'next')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '2' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '41' })
+          end
+        end
+
+        context '最後のページのとき' do
+          let(:page) { 3 }
+
+          it { is_expected.to have_http_status :success }
+          it { is_expected.to have_attributes media_type: 'application/json' }
+
+          it 'Linkヘッダーにページネーション関連のリンクが含まれる' do
+            links = LinkHeaderParser.parse subject.headers.fetch('Link', ''), base: "http://#{host}"
+
+            expect(links.relation_types).to include('first', 'prev')
+          end
+
+          it 'Pageヘッダーに現在のページ番号が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Page' => '3' })
+          end
+
+          it 'Perヘッダーに1ページあたりのファイル数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Per' => '20' })
+          end
+
+          it 'Totalヘッダーにファイル総数が含まれている' do
+            expect(subject.headers.to_h).to include({ 'Total' => '41' })
           end
         end
       end

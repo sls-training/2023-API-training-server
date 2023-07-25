@@ -136,6 +136,7 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
+    link-header-parser (5.0.0)
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -297,6 +298,7 @@ DEPENDENCIES
   faker (~> 3.2)
   kaminari (~> 1.1)
   katakata_irb!
+  link-header-parser (~> 5.0)
   pg (~> 1.1)
   problem_details-rails (~> 0.2.3)
   puma (~> 6.3)
