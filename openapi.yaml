@@ -524,7 +524,7 @@ paths:
         '200':
           description: ユーザがアップロードしたファイル一覧の取得に成功したことを意味する。
           headers:
-            link:
+            Link:
               description: |
                 ページネーション用のリンクを格納する。
 
@@ -535,10 +535,31 @@ paths:
               examples:
                 on_first_page:
                   summary: 先頭ページを返す場合。
-                  value: 'link: <http://localhost:<PORT>/files?page=2>; rel="next", <http://localhost:<PORT>/files?page=7>; rel="last", <http://localhost:<PORT>/files?page=1>; rel="first"'
+                  value: '<http://localhost:<PORT>/files?page=2>; rel="next", <http://localhost:<PORT>/files?page=7>; rel="last", <http://localhost:<PORT>/files?page=1>; rel="first"'
                 on_middle_page:
                   summary: 中間ページを返す場合。
-                  value: 'link: <http://localhost:<PORT>/files?page=2>; rel="prev", <http://localhost:<PORT>/files?page=4>; rel="next", <http://localhost:<PORT>/files?page=7>; rel="last", <http://localhost:<PORT>/files?page=1>; rel="first"'
+                  value: '<http://localhost:<PORT>/files?page=2>; rel="prev", <http://localhost:<PORT>/files?page=4>; rel="next", <http://localhost:<PORT>/files?page=7>; rel="last", <http://localhost:<PORT>/files?page=1>; rel="first"'
+            Page:
+              description: 現在のページ数を格納する。
+              schema:
+                type: integer
+                format: int64
+                minimum: 1
+              required: true
+            Per:
+              description: 1ページあたりのファイル数を格納する。
+              schema:
+                type: integer
+                format: int64
+                minimum: 1
+              required: true
+            Total:
+              description: アップロードされているファイル総数を格納する。
+              schema:
+                type: integer
+                format: int64
+                minimum: 0
+              required: true
           content:
             application/json:
               schema:

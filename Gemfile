@@ -9,8 +9,10 @@ gem 'rails', '~> 7.0.5'
 
 gem 'active_storage_validations', '~> 1.0.4'
 gem 'alba', '~> 2.3'
+gem 'api-pagination', '~> 5.0'
 gem 'bcrypt', '~> 3.1.18'
 gem 'bootsnap', require: false
+gem 'kaminari', '~> 1.1'
 gem 'pg', '~> 1.1'
 gem 'problem_details-rails', '~> 0.2.3'
 gem 'puma', '~> 6.3'
@@ -22,6 +24,7 @@ group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'faker', '~> 3.2'
   gem 'katakata_irb', github: 'tompng/katakata_irb', require: false
+  gem 'link-header-parser', '~> 5.0'
   gem 'rbs_rails', '~> 0.12.0', require: false
 
   gem 'factory_bot_rails', '~> 6.2'
