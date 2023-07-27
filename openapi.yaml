@@ -351,7 +351,22 @@ paths:
                   description: アクセストークンの要求に利用するリソースオーナーのパスワードである。
                 scope:
                   type: string
-                  description: 要求するアクセストークンのスコープである。
+                  description: |
+                    要求するアクセストークンのスコープである。
+
+                    有効な値は以下の値のいずれか、もしくはそれらのスペースで連結した値のみである。
+
+                    - READ
+                    - WRITE
+
+                    なお、値をスペースで連結する際の順序による違いはない。
+                    この性質は、OAuth 2.0におけるアクセストークンのスコープの仕様に従っている。
+
+                    https://datatracker.ietf.org/doc/html/rfc6749#section-3.3
+                  default: READ WRITE
+                  examples:
+                    - READ
+                    - READ WRITE
               required:
                 - grant_type
                 - username
